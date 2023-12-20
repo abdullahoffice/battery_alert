@@ -4,7 +4,7 @@ class BatteryUsageController extends GetxController {
   static final instance = Get.find<BatteryUsageController>();
 
   //*
-  void usageOnTap() {}
+  // void usageOnTap() {}
 
   //*
   List<AppUsageInfo> infos = [];
@@ -26,11 +26,10 @@ class BatteryUsageController extends GetxController {
 
       infos = await AppUsage().getAppUsage(startDate, endDate);
       update();
+
       // Calculate the total usage time
       double totalUsageInSeconds = infos.fold(
           0, (previous, info) => previous + info.usage.inSeconds.toDouble());
-
-      // Create a list to store the calculated percentages
 
       // Calculate the percentage for each app and add it to the percentages list
       percentages = infos

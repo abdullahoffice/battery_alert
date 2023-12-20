@@ -3,7 +3,7 @@ import '../../../battery_alert.dart';
 class PowerConsumpCard extends StatelessWidget {
   final String statusText;
   final String hourValue;
-  final String powerConsumptionValue;
+  final String minValue;
   final String healthStatus;
   final String temperatureValue;
   final String voltageValue;
@@ -14,7 +14,7 @@ class PowerConsumpCard extends StatelessWidget {
       {super.key,
       required this.statusText,
       required this.hourValue,
-      required this.powerConsumptionValue,
+      required this.minValue,
       required this.healthStatus,
       required this.temperatureValue,
       required this.voltageValue,
@@ -70,7 +70,7 @@ class PowerConsumpCard extends StatelessWidget {
                           style: BTextTheme.lightTextTheme.labelLarge,
                         ),
                         Text(
-                          '6',
+                          minValue,
                           style: BTextTheme.lightTextTheme.headlineMedium,
                         ),
                         Text(

@@ -1,5 +1,4 @@
 import '../../../battery_alert.dart';
-import 'dart:core';
 
 class HomeView extends GetView {
   const HomeView({super.key});
@@ -41,32 +40,11 @@ class HomeView extends GetView {
                       ),
                     ),
 
-                    //*Center
+                    //*Center 
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                      child: StreamBuilder<AndroidBatteryInfo?>(
-                        stream: BatteryInfoPlugin().androidBatteryInfoStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return PowerConsumpCard(
-                              // ${(snapshot.data?.batteryLevel)} %"
-                              statusText: '${(snapshot.data?.batteryLevel)} %',
-                              hourValue: 'ss',
-                              powerConsumptionValue: 'ss',
-                              healthStatus: 'sno',
-                              temperatureValue: '30.4 C ',
-                              voltageValue: '4.223 V',
-                              capacityValue: '${(snapshot.data?.batteryCapacity)}',
-                              batteryPercentage: '${(snapshot.data?.batteryLevel)} %',
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
-                      ),
+                      child: const BaterryInfo(),
                     ),
 
                     //*Bottom
@@ -80,7 +58,6 @@ class HomeView extends GetView {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              
                               //*SwitchContainers
                               switchSettingCard(
                                 imgText: 'assets/images/icons/alarmIcon.svg',
@@ -95,7 +72,7 @@ class HomeView extends GetView {
                               ),
                             ],
                           ),
-                          
+
                           //*AdsAndSmallContainers
                           SizedBox(height: 20.h),
                           Row(
