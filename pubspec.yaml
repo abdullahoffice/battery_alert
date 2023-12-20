@@ -1,0 +1,72 @@
+name: battery_alert
+description: "A new Flutter project."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.2.2 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  get: ^4.6.6
+  flutter_screenutil: ^5.9.0
+  flutter_svg: ^2.0.9
+  dotted_border: ^2.1.0
+  simple_ripple_animation: ^0.0.8
+  awesome_ripple_animation: ^2.0.0
+  flutter_rating_bar: ^4.0.1
+  flutter_sticky_header: ^0.6.5
+  lite_rolling_switch: ^1.0.1
+  flutter_switch: ^0.3.2
+  liquid_progress_indicator_v2: ^0.5.0
+  app_usage: ^3.0.1
+  carousel_slider: ^4.2.1
+  dots_indicator: ^3.0.0
+  battery_info: ^1.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+
+  assets:
+    - assets/images/
+    - assets/images/icons/
+    - assets/svgs/
+
+  fonts:
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Rubik-BlackItalic.ttf
+          weight: 900
+          style: italic
+        - asset: assets/fonts/Rubik-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Rubik-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/Rubik-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Rubik-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Rubik-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/Rubik-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Rubik-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Rubik-Regular.ttf
