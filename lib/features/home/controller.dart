@@ -3,45 +3,24 @@ import '../../battery_alert.dart';
 class HomeController extends GetxController {
   static final instance = Get.find<HomeController>();
 
-  String batterylevel = "",
-      batteryhealth = "",
-      chargingstatus = "",
-      pluggedstatus = "";
+//   String formatRemainingTime(int chargeTimeRemaining) {
+//   if (chargeTimeRemaining == null) {
+//     return '--'; // Handle unavailable data
+//   }
 
-  AndroidBatteryInfo infoandroid = AndroidBatteryInfo();
+//   final Duration remainingTime = Duration(seconds: chargeTimeRemaining);
+//   final int hours = remainingTime.inHours;
+//   final int minutes = remainingTime.inMinutes % 60;
 
-  void getValues() async {
-    Future.delayed(Duration.zero, () async {
-      infoandroid = (await BatteryInfoPlugin().androidBatteryInfo)!;
-      // infoios = await BatteryInfoPlugin().iosBatteryInfo;  for iOS
-      batterylevel = infoandroid.batteryLevel.toString();
-      batteryhealth = infoandroid.health.toString();
-      chargingstatus = infoandroid.chargingStatus.toString();
-      pluggedstatus = infoandroid.pluggedStatus.toString();
-    });
-    update();
-  }
+//   return hours > 0
+//       ? '$hours h $minutes m'
+//       : '$minutes m';
+// }
 
-  void getVlues() {
-    Future.delayed(Duration.zero, () async {
-      BatteryInfoPlugin()
-          .androidBatteryInfoStream
-          .listen((AndroidBatteryInfo batteryInfo) {
-            //add listiner to update values if there is changes
-            infoandroid = batteryInfo;
-            batterylevel = infoandroid.batteryLevel.toString();
-            batteryhealth = infoandroid.health.toString();
-            chargingstatus = infoandroid.chargingStatus.toString();
-            pluggedstatus = infoandroid.pluggedStatus.toString();
-          } as void Function(AndroidBatteryInfo? event)?);
-      update();
-    });
-  }
+  // void goToSetting() {
+  //   Get.to(const SettingView());
+  // }
 
-  void goToSetting() {
-    Get.to(const SettingView());
-  }
-
-  bool isOn = false;
-  void switchButton() {}
+  // bool isOn = false;
+  // void switchButton() {}
 }

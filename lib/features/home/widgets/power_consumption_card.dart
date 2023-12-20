@@ -18,7 +18,8 @@ class PowerConsumpCard extends StatelessWidget {
       required this.healthStatus,
       required this.temperatureValue,
       required this.voltageValue,
-      required this.capacityValue, required this.batteryPercentage});
+      required this.capacityValue,
+      required this.batteryPercentage});
 
   @override
   Widget build(BuildContext context) {
@@ -66,17 +67,17 @@ class PowerConsumpCard extends StatelessWidget {
                           style: BTextTheme.lightTextTheme.headlineMedium,
                         ),
                         Text(
-                          'Hour',
+                          '',
                           style: BTextTheme.lightTextTheme.labelLarge,
                         ),
                         Text(
                           minValue,
                           style: BTextTheme.lightTextTheme.headlineMedium,
                         ),
-                        Text(
-                          'Min',
-                          style: BTextTheme.lightTextTheme.labelLarge,
-                        ),
+                        // Text(
+                        //   'Min',
+                        //   style: BTextTheme.lightTextTheme.labelLarge,
+                        // ),
                       ],
                     ),
                     SizedBox(height: 2.h),
@@ -95,12 +96,7 @@ class PowerConsumpCard extends StatelessWidget {
                           image: AssetImage('assets/images/heart.png'),
                         ),
                         Text(
-                          'Health',
-                          style: BTextTheme.lightTextTheme.bodyMedium,
-                        ),
-                        SizedBox(width: 3.w),
-                        Text(
-                         healthStatus,
+                          healthStatus,
                           style: Theme.of(Get.context!)
                               .textTheme
                               .bodyMedium!

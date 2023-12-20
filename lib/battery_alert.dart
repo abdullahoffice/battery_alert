@@ -8,6 +8,8 @@ export 'package:get/get.dart';
 export 'package:app_usage/app_usage.dart';
 export 'package:dots_indicator/dots_indicator.dart';
 export 'package:battery_info/model/android_battery_info.dart';
+export 'package:battery_plus/battery_plus.dart';
+export 'package:device_info_plus/device_info_plus.dart';
 
 export 'package:carousel_slider/carousel_slider.dart';
 export 'package:battery_info/battery_info_plugin.dart';

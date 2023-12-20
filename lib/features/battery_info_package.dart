@@ -36,13 +36,7 @@ class _BaterryInfoState extends State<BaterryInfo> {
                   temperatureValue: '${(snapshot.data!.temperature)} C',
                   voltageValue: '${(snapshot.data?.voltage)} mV',
                   capacityValue: '${(snapshot.data?.batteryCapacity)} mAh',
-                  batteryPercentage: '${(snapshot.data?.batteryLevel)} %',    
-
-
-
-
-
-                  
+                  batteryPercentage: '${(snapshot.data?.batteryLevel)} %',
                 ),
               ],
             );
@@ -57,7 +51,7 @@ class _BaterryInfoState extends State<BaterryInfo> {
       return data.chargeTimeRemaining == -1
           ? const Text("Calculating charge time remaining")
           : Text(
-              "Charge time remaining: ${(data.chargeTimeRemaining / 1000 / 60).truncate()} minutes");
+              "Charge time remaining: ${(data.chargeTimeRemaining! / 1000 / 60).truncate()} minutes");
     }
     return const Text("Battery is full or not connected to a power source");
   }

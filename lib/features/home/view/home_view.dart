@@ -40,12 +40,8 @@ class HomeView extends GetView {
                       ),
                     ),
 
-                    //*Center 
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                      child: const BaterryInfo(),
-                    ),
+                    //*Center
+                    BatteryInfoWidget(),
 
                     //*Bottom
                     SizedBox(height: 20.h),
@@ -141,4 +137,42 @@ class HomeView extends GetView {
           );
         },
       );
+}
+
+class BatteryInfoWidget extends StatelessWidget {
+  const BatteryInfoWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+      child: StreamBuilder<AndroidBatteryInfo?>(
+        stream: BatteryInfoPlugin().androidBatteryInfoStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return PowerConsumpCard(
+              // ${(snapshot.data?.batteryLevel)} %"
+              statusText: '${(snapshot.data?.pluggedStatus)}',
+              hourValue: snapshot.data!.batteryLevel == 100
+                  ? 'Full'
+                  : '${(snapshot.data!.chargeTimeRemaining! / 1000 / 60 / 60).truncate()}h',
+              minValue: '',
+
+              healthStatus: '${(snapshot.data!.health)}',
+              temperatureValue: '${(snapshot.data!.temperature)} C',
+              voltageValue: '${(snapshot.data?.voltage)} mV',
+              capacityValue: '${(snapshot.data?.batteryCapacity)} mAh',
+              batteryPercentage: '${(snapshot.data?.batteryLevel)} %',
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
+  }
 }
