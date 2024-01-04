@@ -1,8 +1,13 @@
 import '../../../battery_alert.dart';
 
-class BatteryInfoView extends GetView<BatteryViewController> {
-  const BatteryInfoView({super.key});
+class BatteryInfoView extends StatefulWidget {
+  const BatteryInfoView({Key? key}) : super(key: key);
 
+  @override
+  _BatteryInfoViewState createState() => _BatteryInfoViewState();
+}
+
+class _BatteryInfoViewState extends State<BatteryInfoView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,36 +27,36 @@ class BatteryInfoView extends GetView<BatteryViewController> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const NavigationHeader(title: 'Battery Information'),
-                    Expanded(
-                      ///TODO 1
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            //*
-                            SizedBox(height: 12.h),
-                            const BatteryPogressWidget(),
 
-                            //*
-                            // SizedBox(height: 6.h),
-                            const HourMinuteRow(),
+                    //*
+                    // const SizedBox(height: 20),
+                    const BatteryProgressWidget(),
 
-                            //*
-                            Text('Remaining',
-                                style: BTextTheme.lightTextTheme.bodyLarge),
-                            SizedBox(height: 10.h),
-                          ],
+                    //*
+                    // const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        const RemainingTime(),
+                        Text(
+                          'Remaining',
+                          style: BTextTheme.lightTextTheme.bodyLarge,
                         ),
-                      ),
+                      ],
                     ),
+
+                    //*
+                    SizedBox(height: 4.h),
 
                     //*Grid
-                    Expanded(
-                      // flex: 2,
-                      child: BatteryInfoGrid(),
+                    SizedBox(height: 4.h),
+                    SizedBox(
+                      height: 370.h,
+                      child: const BatteryInfoGrid(),
                     ),
+                    SizedBox(height: 10.h),
                   ],
                 ),
               ),
@@ -61,38 +66,48 @@ class BatteryInfoView extends GetView<BatteryViewController> {
       );
 }
 
-//*HourMinuteRow
-class HourMinuteRow extends StatelessWidget {
-  const HourMinuteRow({
+class RemainingTime extends StatelessWidget {
+  const RemainingTime({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          '23',
-          style:
-              BTextTheme.lightTextTheme.labelLarge!.copyWith(fontSize: 34.sp),
-        ),
-        Text(
-          'Hour',
-          style: BTextTheme.lightTextTheme.headlineSmall!
-              .copyWith(fontWeight: FontWeight.normal),
-        ),
-        Text(
-          '6',
-          style:
-              BTextTheme.lightTextTheme.labelLarge!.copyWith(fontSize: 34.sp),
-        ),
-        Text(
-          'Min',
-          style: BTextTheme.lightTextTheme.headlineSmall!
-              .copyWith(fontWeight: FontWeight.normal),
-        ),
-      ],
+    return FutureBuilder<AndroidBatteryInfo?>(
+      future: BatteryInfoPlugin().androidBatteryInfo,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '${(snapshot.data!.chargeTimeRemaining! / 1000 / 60 / 60).truncate()}',
+                style: BTextTheme.lightTextTheme.labelLarge!
+                    .copyWith(fontSize: 34.sp),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 6.h),
+                child: Text('Hour', style: BTextTheme.lightTextTheme.bodyLarge),
+              ),
+              SizedBox(width: 8.h), // Adjust the spacing between Hour and Min
+              Text(
+                '${(snapshot.data!.chargeTimeRemaining! / 1000 / 60 % 60).truncate()}',
+                style: BTextTheme.lightTextTheme.labelLarge!
+                    .copyWith(fontSize: 34.sp),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Text('Min', style: BTextTheme.lightTextTheme.bodyLarge),
+              ),
+            ],
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }

@@ -8,4 +8,3 @@ export 'battery_usage/battery_usage.dart';
 export 'charger_testing/charger_testing.dart';
 export 'charging_animation/charging_animation.dart';
 export 'premium_screen/premium_screen.dart';
-export 'battery_info_package.dart';

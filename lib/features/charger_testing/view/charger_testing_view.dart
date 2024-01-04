@@ -33,7 +33,7 @@ class ChargerTestingView extends GetView<ChargerTestingController> {
 
                     //*CircularBattery
                     SizedBox(height: 40.h),
-                    const BatteryPogressWidget(),
+                    const BatteryProgressWidget(),
 
                     //*
                     SizedBox(height: 50.h),

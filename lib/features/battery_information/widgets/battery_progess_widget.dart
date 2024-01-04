@@ -1,8 +1,24 @@
-import 'package:battery_alert/battery_alert.dart';
+import '../../../battery_alert.dart';
 
-class BatteryPogressWidget extends GetWidget {
-  // final BoxShadow? boxShadows;
-  const BatteryPogressWidget({super.key});
+class BatteryProgressWidget extends StatefulWidget {
+  const BatteryProgressWidget({Key? key}) : super(key: key);
+
+  @override
+  _BatteryProgressWidgetState createState() => _BatteryProgressWidgetState();
+}
+
+class _BatteryProgressWidgetState extends State<BatteryProgressWidget> {
+  late Stream<AndroidBatteryInfo?> batteryInfoStream;
+//TODO: init
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   initializeBatteryInfoStream();
+  // }
+
+  // void initializeBatteryInfoStream() {
+  //   batteryInfoStream = BatteryInfoPlugin().androidBatteryInfoStream;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +27,6 @@ class BatteryPogressWidget extends GetWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: const Color(0xff0FD46D),
-        // boxShadow: boxShadows != null ? [boxShadows!] : [],
         boxShadow: [
           AppDecorations.batteryProgressShadow,
         ],
@@ -41,39 +56,66 @@ class BatteryPogressWidget extends GetWidget {
                     child: SizedBox(
                       height: 110.h,
                       width: 73.w,
-                      child: LiquidLinearProgressIndicator(
-                        value: 0.5, // Defaults to 0.5.
-                        valueColor: const AlwaysStoppedAnimation(
-                          Color(0xff0FD46D),
-                        ), // Defaults to the current Theme's accentColor.
-                        backgroundColor: Colors
-                            .white, // Defaults to the current Theme's backgroundColor.
-                        borderColor: Color(0xff0FD46D),
-                        borderWidth: 1.0,
-                        borderRadius: 10.0,
-
-                        direction: Axis
-                            .vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                        center: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '40',
-                                style: BTextTheme.darkTextTheme.headlineMedium!
-                                    .copyWith(
-                                  color: AppColors.backgroundColor,
-                                ),
+                      child: FutureBuilder<AndroidBatteryInfo?>(
+                        future: BatteryInfoPlugin().androidBatteryInfo,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.hasError) {
+                            // Handle error case
+                            return const Center(
+                              child: Text('Error loading battery info'),
+                            );
+                          } else if (!snapshot.hasData ||
+                              snapshot.data == null) {
+                            // Handle case where data is null
+                            return const Center(
+                              child: Text('No battery info available'),
+                            );
+                          } else {
+                            return LiquidLinearProgressIndicator(
+                              value: double.parse(
+                                  '${snapshot.data!.batteryLevel! / 100}'),
+                              valueColor: const AlwaysStoppedAnimation(
+                                Color(0xff0FD46D),
                               ),
-                              TextSpan(
-                                text: '%',
-                                style: BTextTheme.darkTextTheme.bodySmall!
-                                    .copyWith(
-                                  color: AppColors.backgroundColor,
-                                ),
+                              backgroundColor: Colors.white,
+                              borderColor: Color(0xff0FD46D),
+                              borderWidth: 1.0,
+                              borderRadius: 10.0,
+                              direction: Axis.vertical,
+                              center: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    snapshot.data!.batteryLevel.toString(),
+                                    style: BTextTheme
+                                        .lightTextTheme.headlineSmall
+                                        ?.copyWith(
+                                      color: AppColors.backgroundColor,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 1.h),
+                                    child: Text(
+                                      '%',
+                                      style: BTextTheme
+                                          .lightTextTheme.bodyLarge!
+                                          .copyWith(
+                                        color: AppColors.backgroundColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),

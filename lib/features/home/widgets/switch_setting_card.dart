@@ -1,4 +1,3 @@
-
 import '../../../battery_alert.dart';
 
 Widget switchSettingCard({
@@ -10,7 +9,7 @@ Widget switchSettingCard({
     GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 130.h,
+        // height: 130.h,
         width: 150.w,
         // padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -42,7 +41,7 @@ Widget switchSettingCard({
               ),
             ),
             // const SizedBox(width: 40,),
-      
+
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -74,18 +73,23 @@ Widget switchSettingCard({
                     },
                   ),
                 ),
-                Container(
-                  height: 45.h,
-                  width: 58.w,
-                  decoration: const BoxDecoration(
-                      color: Color(0xff5C4493),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20))),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(
-                      'assets/images/icons/IconArrow.svg',
+                // Spacer(),
+                SizedBox(height: 42.h),
+                GestureDetector(
+                  onTap: onTap,
+                  child: Container(
+                    height: 45.h,
+                    width: 58.w,
+                    decoration: const BoxDecoration(
+                        color: Color(0xff5C4493),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20))),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: SvgPicture.asset(
+                        'assets/images/icons/IconArrow.svg',
+                      ),
                     ),
                   ),
                 ),

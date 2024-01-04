@@ -13,5 +13,6 @@ class AppBinding extends Bindings {
     Get.put(ChargerTestingController());
     Get.put(ChargingAnimController());
     Get.put(PremiumController());
+    Get.put(BatteryInfoHandler());
   }
 }

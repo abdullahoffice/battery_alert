@@ -46,7 +46,7 @@ class AppDecorations {
 
   static BoxDecoration backgroundImageDecoration = const BoxDecoration(
     image: DecorationImage(
-      image: AssetImage(AppImages.backgroudImage),
+      image: AssetImage(AppImages.backgroudImageLight),
       fit: BoxFit.fill,
     ),
   );

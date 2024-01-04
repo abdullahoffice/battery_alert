@@ -4,34 +4,50 @@ class BatteryUsageController extends GetxController {
   static final instance = Get.find<BatteryUsageController>();
 
   //*
-  // void usageOnTap() {}
-
-  //*
   List<AppUsageInfo> infos = [];
   List<double> percentages = [];
-  List<Widget> listWidgets = [
-    const DailyAppUsage(),
-    const WeeklyAppUsage(),
-  ];
+
+  List<AppUsageInfo> weeklyInfos = [];
+  List<double> weeklyPercentages = [];
+  List phoneApps = [];
+  
+  Future<void> getAppIcons() async {
+    try {
+      List apps = await DeviceApps.getInstalledApplications(
+          // onlyAppsWithLaunchIntent: true,
+          includeAppIcons: true,
+          includeSystemApps: true,
+          );
+      phoneApps = apps;
+      debugPrint('$phoneApps');
+      update();
+    } on DeviceApps catch (exception) {
+      debugPrint('$exception');
+    }
+  }
+
+  // List<Widget> listWidgets = [
+  //   // const DailyAppUsage(),
+  //   // const WeeklyAppUsage(),
+  // ];
   int currentTab = 0;
   void setCurrentTab({required int c}) {
     currentTab = c;
     update();
   }
 
-  Future<void> getUsageStats() async {
+  Future<void> getDailyUsageStats() async {
     try {
       DateTime endDate = DateTime.now();
-      DateTime startDate = DateTime(2023, 2, 1, 0, 0, 0);
+      DateTime startDate =
+          DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
 
       infos = await AppUsage().getAppUsage(startDate, endDate);
       update();
-
       // Calculate the total usage time
       double totalUsageInSeconds = infos.fold(
           0, (previous, info) => previous + info.usage.inSeconds.toDouble());
-
-      // Calculate the percentage for each app and add it to the percentages list
+      // Calculate the percentage
       percentages = infos
           .map((info) =>
               (info.usage.inSeconds.toDouble() / totalUsageInSeconds) * 100)
@@ -40,16 +56,23 @@ class BatteryUsageController extends GetxController {
       debugPrint('$exception');
     }
   }
-}
 
-// List<BatteryUsageModel> convertAppUsageInfoToBatteryUsageModel(
-//     List<AppUsageInfo> appUsageInfos) {
-//   return appUsageInfos.map((info) {
-//     return BatteryUsageModel(
-//       image: 'YourImagePathHere', // Replace with the actual image path or URL
-//       appName: info.appName,
-//       min: info.usage.toString(), // Assuming 'min' corresponds to the usage in minutes
-//       percentage: '80%', // Replace with the actual percentage calculation
-//     );
-//   }).toList();
-// }
+  Future<void> getWeeklyUsageStats() async {
+    try {
+      DateTime endDate = DateTime.now();
+      DateTime startDate = endDate.subtract(const Duration(days: 6));
+      weeklyInfos = await AppUsage().getAppUsage(startDate, endDate);
+      update();
+      // Calculate the total usage time
+      double totalUsageInSeconds = weeklyInfos.fold(
+          0, (previous, info) => previous + info.usage.inSeconds.toDouble());
+      // Calculate the percentage
+      weeklyPercentages = weeklyInfos
+          .map((info) =>
+              (info.usage.inSeconds.toDouble() / totalUsageInSeconds) * 100)
+          .toList();
+    } on AppUsageException catch (exception) {
+      debugPrint('$exception');
+    }
+  }
+}

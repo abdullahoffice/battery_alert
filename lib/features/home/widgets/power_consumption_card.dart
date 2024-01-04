@@ -67,17 +67,9 @@ class PowerConsumpCard extends StatelessWidget {
                           style: BTextTheme.lightTextTheme.headlineMedium,
                         ),
                         Text(
-                          '',
-                          style: BTextTheme.lightTextTheme.labelLarge,
-                        ),
-                        Text(
                           minValue,
                           style: BTextTheme.lightTextTheme.headlineMedium,
                         ),
-                        // Text(
-                        //   'Min',
-                        //   style: BTextTheme.lightTextTheme.labelLarge,
-                        // ),
                       ],
                     ),
                     SizedBox(height: 2.h),
@@ -94,6 +86,13 @@ class PowerConsumpCard extends StatelessWidget {
                       children: [
                         const Image(
                           image: AssetImage('assets/images/heart.png'),
+                        ),
+                        Text(
+                          'health ',
+                          style: Theme.of(Get.context!)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.white),
                         ),
                         Text(
                           healthStatus,
@@ -124,7 +123,7 @@ class PowerConsumpCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _textContainer(title: 'Batt.temp', value: capacityValue),
+                _textContainer(title: 'Batt.temp', value: temperatureValue),
                 _textContainer(title: 'Voltage', value: voltageValue),
                 _textContainer(title: 'Capacity', value: capacityValue),
               ],

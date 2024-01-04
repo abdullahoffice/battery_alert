@@ -1,7 +1,10 @@
-import 'package:battery_alert/battery_alert.dart';
+import '../../../battery_alert.dart';
 
-class DailyAppUsage extends GetWidget<BatteryUsageController> {
-  const DailyAppUsage({super.key});
+class DailyBatteryUsage extends StatelessWidget {
+  final BatteryUsageController controller;
+
+  const DailyBatteryUsage({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +21,13 @@ class DailyAppUsage extends GetWidget<BatteryUsageController> {
                 color: const Color(0xff5E4694),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: SvgPicture.asset(
-                AppSvgs.emailIcon,
+              child: Image.memory(
+                controller.phoneApps[index] is ApplicationWithIcon
+                    ? controller.phoneApps[index].icon
+                    : null,
               ),
             ),
+            // child: Image.memory(controller.apps[index].icon)),
             title: Text(
               controller.infos[index].appName,
               style: BTextTheme.lightTextTheme.bodyMedium,
@@ -44,7 +50,7 @@ class DailyAppUsage extends GetWidget<BatteryUsageController> {
                 ),
                 SizedBox(height: 8.h),
                 LinearProgressIndicator(
-                  value: 0.8,
+                  value: controller.percentages[index] / 100,
                   minHeight: 9.h,
                   borderRadius: BorderRadius.circular(10.r),
                   valueColor: const AlwaysStoppedAnimation<Color>(

@@ -26,9 +26,9 @@ class PremiumController extends GetxController {
     PremiumImageModel(
       image: AppImages.premiumImage,
     ),
-    PremiumImageModel(
-      image: AppImages.premiumImageTwo,
-    ),
+    // PremiumImageModel(
+    //   image: AppImages.premiumImageTwo,
+    // ),
     // PremiumImageModel(
     //   image: AppImages.premiumImageTwo,
     // ),

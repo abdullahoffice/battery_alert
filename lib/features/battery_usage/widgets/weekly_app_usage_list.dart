@@ -1,7 +1,10 @@
-import 'package:battery_alert/battery_alert.dart';
+import '../../../battery_alert.dart';
 
-class WeeklyAppUsage extends GetWidget<BatteryUsageController> {
-  const WeeklyAppUsage({super.key});
+class WeeklyBatteryUsage extends StatelessWidget {
+  final BatteryUsageController controller;
+
+  const WeeklyBatteryUsage({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +12,7 @@ class WeeklyAppUsage extends GetWidget<BatteryUsageController> {
       height: 400.h,
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: ListView.builder(
-        itemCount: controller.infos.length,
+        itemCount: controller.weeklyInfos.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             leading: Container(
@@ -18,12 +21,14 @@ class WeeklyAppUsage extends GetWidget<BatteryUsageController> {
                 color: const Color(0xff5E4694),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: SvgPicture.asset(
-                AppSvgs.emailIcon,
+              child: Image.memory(
+                controller.phoneApps[index] is ApplicationWithIcon
+                    ? controller.phoneApps[index].icon
+                    : null,
               ),
             ),
             title: Text(
-              controller.infos[index].appName,
+              controller.weeklyInfos[index].appName,
               style: BTextTheme.lightTextTheme.bodyMedium,
             ),
             subtitle: Column(
@@ -32,19 +37,19 @@ class WeeklyAppUsage extends GetWidget<BatteryUsageController> {
                 Row(
                   children: [
                     Text(
-                      '${controller.infos[index].usage.inMinutes} Min',
+                      '${controller.weeklyInfos[index].usage.inMinutes} Min',
                       style: BTextTheme.lightTextTheme.bodyMedium,
                     ),
                     SizedBox(width: 5.w),
                     Text(
-                      '${controller.percentages[index].toStringAsFixed(0)} %',
+                      '${controller.weeklyPercentages[index].toStringAsFixed(0)} %',
                       style: BTextTheme.lightTextTheme.bodyMedium,
                     ),
                   ],
                 ),
                 SizedBox(height: 8.h),
                 LinearProgressIndicator(
-                  value: 0.8,
+                  value: controller.weeklyPercentages[index] / 100,
                   minHeight: 9.h,
                   borderRadius: BorderRadius.circular(10.r),
                   valueColor: const AlwaysStoppedAnimation<Color>(

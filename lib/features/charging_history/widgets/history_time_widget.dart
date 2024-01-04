@@ -1,18 +1,24 @@
 import '../../../battery_alert.dart';
 
-class HistoryTimeWidget extends GetWidget {
-  const HistoryTimeWidget({super.key});
+class HistoryTimeWidget extends StatelessWidget {
+  final String startPercentage;
+  final String endPercentage;
+
+  const HistoryTimeWidget({
+    required this.startPercentage,
+    required this.endPercentage,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 130.h,
       decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: const Color(0xff0FD46D),
-          boxShadow: [
-            AppDecorations.chargerHistoryShadow,
-          ]),
+        shape: BoxShape.circle,
+        color: const Color(0xff0FD46D),
+        boxShadow: [AppDecorations.chargerHistoryShadow],
+      ),
       child: Center(
         child: Container(
           height: 126.h,
@@ -42,9 +48,8 @@ class HistoryTimeWidget extends GetWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '11%',
-                            style:
-                                BTextTheme.lightTextTheme.bodyLarge!.copyWith(
+                            startPercentage,
+                            style: BTextTheme.lightTextTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColors.secondaryColor,
                             ),
@@ -54,9 +59,8 @@ class HistoryTimeWidget extends GetWidget {
                             style: BTextTheme.lightTextTheme.bodyMedium,
                           ),
                           Text(
-                            '15%',
-                            style:
-                                BTextTheme.lightTextTheme.bodyLarge!.copyWith(
+                            endPercentage,
+                            style: BTextTheme.lightTextTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColors.secondaryColor,
                             ),

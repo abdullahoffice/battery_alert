@@ -1,4 +1,4 @@
-import 'package:battery_alert/battery_alert.dart';
+import '../../../battery_alert.dart';
 
 class BatteryUsageView extends GetView<BatteryUsageController> {
   const BatteryUsageView({super.key});
@@ -6,87 +6,80 @@ class BatteryUsageView extends GetView<BatteryUsageController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: _body,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          body: _body,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            //*image
+            // flexibleSpace: const Image(
+            //   image: AssetImage(AppImages.backgroudImageLight),
+            //   fit: BoxFit.cover,
+            // ),
+            backgroundColor: AppColors.backgroundColor,
+            // backgroundColor: AppColors.secondaryColor,
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomIconButton(
+                iconPath: AppSvgs.backArrow,
+                onPress: () {
+                  Get.back();
+                },
+              ),
+            ),
+            title: Text(
+              'Battery Usage',
+              style: BTextTheme.lightTextTheme.titleSmall,
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  Widget get _body => GetBuilder<BatteryUsageController>(
-        initState: (_) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            controller.getUsageStats();
-          });
-        },
-        builder: (_) {
-          return SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: Container(
-              decoration: AppDecorations.backgroundImageDecoration,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-                child: Column(
+  Widget get _body => GetBuilder<BatteryUsageController>(initState: (_) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (timeStamp) {
+            controller.getDailyUsageStats();
+            controller.getWeeklyUsageStats();
+            controller.getAppIcons();
+          },
+        );
+      }, builder: (_) {
+        return Container(
+          decoration: AppDecorations.backgroundImageDecoration,
+          child: Column(
+            children: [
+              SizedBox(height: 10.h),
+              TabBar(
+                padding: EdgeInsets.symmetric(horizontal: 26.w),
+                indicatorSize: TabBarIndicatorSize.tab,
+                unselectedLabelColor: Colors.white,
+                labelColor: Colors.black,
+                labelStyle: BTextTheme.darkTextTheme.bodySmall,
+                indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(80),
+                    color: AppColors.lightGreenColor),
+                tabs: const [
+                  Tab(
+                    child: Text('Daily'),
+                  ),
+                  Tab(
+                    child: Text('Weekly'),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(
                   children: [
-                    const NavigationHeader(title: 'Battery Usage'),
-                    SizedBox(height: 20.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () => controller.setCurrentTab(c: 0),
-                          child: Container(
-                            width: 129.w,
-                            height: 28.h,
-                            decoration: BoxDecoration(
-                              color: controller.currentTab == 0
-                                  ? AppColors.secondaryColor
-                                  : const Color(0xff280C68),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Daily',
-                                style: TextStyle(
-                                  color: controller.currentTab == 0
-                                      ? const Color(0xff280C68)
-                                      : Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => controller.setCurrentTab(c: 1),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: controller.currentTab == 0
-                                  ? const Color(0xff280C68)
-                                  : AppColors.secondaryColor,
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                              ),
-                            ),
-                            width: 129.w,
-                            height: 28.h,
-                            child: const Center(child: Text('Weekly')),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: controller.listWidgets[controller.currentTab],
-                    ),
-                    SizedBox(height: 20.h),
+                    DailyBatteryUsage(controller: controller),
+                    WeeklyBatteryUsage(controller: controller),
                   ],
                 ),
               ),
-            ),
-          );
-        },
-      );
+            ],
+          ),
+        );
+      });
 }

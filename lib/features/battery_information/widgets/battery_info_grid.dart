@@ -36,8 +36,8 @@ class _BatteryInfoGridState extends State<BatteryInfoGrid> {
               itemCount: controller.batterInformationData.length,
               itemBuilder: (context, int index) {
                 return Container(
-                  width: 140.w,
-                  height: 62.h,
+                  // width: 140.w,
+                  // height: 62.h,
                   padding:
                       EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
                   decoration: BoxDecoration(
@@ -61,14 +61,20 @@ class _BatteryInfoGridState extends State<BatteryInfoGrid> {
                             Text(
                               controller.batterInformationData[index].title,
                               textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis,
                               style: BTextTheme.lightTextTheme.labelLarge,
                             ),
-                            Text(
-                              controller.batterInformationData[index].subTitle,
-                              textAlign: TextAlign.left,
-                              style: BTextTheme.lightTextTheme.labelLarge!
-                                  .copyWith(color: AppColors.secondaryColor),
-                            )
+                            SizedBox(
+                              width: 100.w,
+                              child: Text(
+                                controller.batterInformationData[index].subTitle,
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: BTextTheme.lightTextTheme.labelLarge!
+                                    .copyWith(color: AppColors.secondaryColor),
+                              ),
+                            ),
                           ],
                         ),
                       ),
