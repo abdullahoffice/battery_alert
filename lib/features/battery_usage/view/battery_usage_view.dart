@@ -53,6 +53,7 @@ class BatteryUsageView extends GetView<BatteryUsageController> {
             children: [
               SizedBox(height: 10.h),
               TabBar(
+                dividerColor: Colors.transparent,
                 padding: EdgeInsets.symmetric(horizontal: 26.w),
                 indicatorSize: TabBarIndicatorSize.tab,
                 unselectedLabelColor: Colors.white,

@@ -52,7 +52,7 @@ class ConnectCharPopup extends StatelessWidget {
             },
             style: OutlinedButton.styleFrom(
               primary: Colors.white,
-              side: const BorderSide(width: 1, color: AppColors.blackColor),
+              side: const BorderSide(width: 1, color: AppColors.darkPurple),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0.r),
               ),
@@ -71,7 +71,7 @@ class ConnectCharPopup extends StatelessWidget {
               ),
             ),
             child: const Text(
-              'Check',
+              'Rate Us',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,

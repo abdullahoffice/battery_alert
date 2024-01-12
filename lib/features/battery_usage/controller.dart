@@ -10,16 +10,16 @@ class BatteryUsageController extends GetxController {
   List<AppUsageInfo> weeklyInfos = [];
   List<double> weeklyPercentages = [];
   List phoneApps = [];
-  
+
   Future<void> getAppIcons() async {
     try {
       List apps = await DeviceApps.getInstalledApplications(
-          // onlyAppsWithLaunchIntent: true,
-          includeAppIcons: true,
-          includeSystemApps: true,
-          );
+        // onlyAppsWithLaunchIntent: true,
+        includeAppIcons: true,
+        includeSystemApps: true,
+      );
       phoneApps = apps;
-      debugPrint('$phoneApps');
+      debugPrint('apps: ${phoneApps.length}');
       update();
     } on DeviceApps catch (exception) {
       debugPrint('$exception');
@@ -43,6 +43,7 @@ class BatteryUsageController extends GetxController {
           DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
 
       infos = await AppUsage().getAppUsage(startDate, endDate);
+      debugPrint('Info: ${infos.length}');
       update();
       // Calculate the total usage time
       double totalUsageInSeconds = infos.fold(
@@ -52,6 +53,7 @@ class BatteryUsageController extends GetxController {
           .map((info) =>
               (info.usage.inSeconds.toDouble() / totalUsageInSeconds) * 100)
           .toList();
+      update();
     } on AppUsageException catch (exception) {
       debugPrint('$exception');
     }
@@ -71,8 +73,9 @@ class BatteryUsageController extends GetxController {
           .map((info) =>
               (info.usage.inSeconds.toDouble() / totalUsageInSeconds) * 100)
           .toList();
+      update();
     } on AppUsageException catch (exception) {
-      debugPrint('$exception');
+      debugPrint('$exception'); 
     }
   }
 }

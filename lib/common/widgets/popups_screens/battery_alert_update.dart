@@ -40,7 +40,7 @@ class BatterAlertUpdates extends StatelessWidget {
             },
             style: OutlinedButton.styleFrom(
                 primary: Colors.white,
-                side: const BorderSide(width: 1, color: AppColors.blackColor),
+                side: const BorderSide(width: 1, color: AppColors.darkPurple),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0.r),
                 )),

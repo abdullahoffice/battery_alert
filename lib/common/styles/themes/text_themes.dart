@@ -67,57 +67,57 @@ class BTextTheme {
     headlineLarge: const TextStyle().copyWith(
       fontSize: 29.75.sp,
       fontWeight: FontWeight.bold,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     headlineMedium: const TextStyle().copyWith(
       fontSize: 26.sp,
       fontWeight: FontWeight.w600,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     headlineSmall: const TextStyle().copyWith(
       fontSize: 21.0.sp,
       fontWeight: FontWeight.w600,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     titleLarge: const TextStyle().copyWith(
       fontSize: 17.0.sp,
       fontWeight: FontWeight.w600,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     titleMedium: const TextStyle().copyWith(
       fontSize: 16.0.sp,
       fontWeight: FontWeight.w500,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     titleSmall: const TextStyle().copyWith(
       fontSize: 16.0.sp,
       fontWeight: FontWeight.w400,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     bodyLarge: const TextStyle().copyWith(
       fontSize: 14.0.sp,
       fontWeight: FontWeight.w500,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     bodyMedium: const TextStyle().copyWith(
       fontSize: 14.0.sp,
       fontWeight: FontWeight.normal,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     bodySmall: const TextStyle().copyWith(
       fontSize: 14.0.sp,
       fontWeight: FontWeight.w500,
-      color: AppColors.blackColor.withOpacity(0.5),
+      color: AppColors.darkPurple.withOpacity(0.5),
     ),
     labelLarge: const TextStyle().copyWith(
       fontSize: 11.0.sp,
       fontWeight: FontWeight.normal,
-      color: AppColors.blackColor,
+      color: AppColors.darkPurple,
     ),
     labelMedium: const TextStyle().copyWith(
       fontSize: 12.0.sp,
       fontWeight: FontWeight.normal,
-      color: AppColors.blackColor.withOpacity(0.5),
+      color: AppColors.darkPurple.withOpacity(0.5),
     ),
   );
 }

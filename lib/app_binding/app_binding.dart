@@ -1,2 +1,2 @@
 export 'app_controller.dart';
-export 'charging_history_storage.dart';
+export 'battery_alert_storage.dart';

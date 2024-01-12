@@ -2,6 +2,7 @@ import '../../../battery_alert.dart';
 
 class ChargingHistoryController extends GetxController {
   static final instance = Get.find<ChargingHistoryController>();
+  BatteryInfoHandler controller = BatteryInfoHandler();
 
   //*Timer
   void addTime() {
@@ -11,7 +12,7 @@ class ChargingHistoryController extends GetxController {
   }
 
   //*
-  final s = Stream.periodic(const Duration(seconds: 1));
+  final s = Stream.periodic(const Duration(seconds: 1)).asBroadcastStream();
   StreamSubscription? subscription;
   void startTimer() {
     if (subscription == null || subscription!.isPaused) {
@@ -37,9 +38,6 @@ class ChargingHistoryController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    // instance of shared pref
-    // final result = await ChargingHistoryStorage.getInstance();
-    // result.getChargingHistory();
 
     // Start&StopTimer
     if (subscription == null) {
@@ -62,11 +60,10 @@ class ChargingHistoryController extends GetxController {
   String get seconds => twoDigits(duration.inSeconds.remainder(60));
 
   //*setModel
-  List<ChargingHistoryModel> myHistoryList = [];
+  // List<ChargingHistoryModel> myHistoryList = [];
   Future<void> setChargHistory(
       {required List<ChargingHistoryModel> history}) async {
-    
-    final result = await ChargingHistoryStorage.getInstance();
+    final result = await BatteryAlertStorage.getInstance();
     final data = await result.setChargingHistory(history: history);
 
     data.fold(
@@ -74,8 +71,9 @@ class ChargingHistoryController extends GetxController {
         Fluttertoast.showToast(msg: errorMessage);
       },
       (r) => null,
-    );  
-    update();
+    );
+    controller.update();
+
     // debugPrint('historyy: $myHistoryList');
   }
 
@@ -83,7 +81,7 @@ class ChargingHistoryController extends GetxController {
   ChargingHistoryModel model = ChargingHistoryModel();
   List<ChargingHistoryModel> historyList = [];
   Future<void> getCharhistory() async {
-    final result = await ChargingHistoryStorage.getInstance();
+    final result = await BatteryAlertStorage.getInstance();
     final data = result.getChargingHistory();
 
     data.fold((errorMessage) {
@@ -93,7 +91,8 @@ class ChargingHistoryController extends GetxController {
       Fluttertoast.showToast(msg: 'Data Fetched');
     });
 
-    update();
+    // controller.update();
+    // update();
     // debugPrint('Model: ${result.getChargingHistory()}');
   }
 }

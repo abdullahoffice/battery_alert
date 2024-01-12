@@ -1,7 +1,7 @@
 import '../../../battery_alert.dart';
 
 class BatteryInfoHandler extends GetxController {
-  late List<ChargingHistoryModel> historyList = [];
+  // late List<ChargingHistoryModel> historyList = [];
 
   static final instance = Get.find<BatteryInfoHandler>();
 
@@ -75,7 +75,7 @@ class BatteryInfoHandler extends GetxController {
         startPercentage: '$pluginPercentage%',
         endPercentage: '$plugoutPercentage%',
       );
-      final historyStorage = await ChargingHistoryStorage.getInstance();
+      final historyStorage = await BatteryAlertStorage.getInstance();
       // final existingHistoryData = await ChargingHistoryController.instance.getCharhistory(); //test with this
       final existingHistoryData = historyStorage.getChargingHistory();
       existingHistoryData.fold(
@@ -83,16 +83,24 @@ class BatteryInfoHandler extends GetxController {
           debugPrint('Error: retrieving existing history: $errorMessage');
         },
         (existingHistoryList) {
-          historyList.addAll(existingHistoryList);
+          ChargingHistoryController.instance.historyList
+              .addAll(existingHistoryList);
         },
       );
-      historyList.add(historyModel);
-      historyList = historyList.toSet().toList(); //removes duplicates from list
-      await ChargingHistoryController.instance
-          .setChargHistory(history: historyList);
-      debugPrint('historyy: ${historyList.length}');
-      ChargingHistoryController.instance.historyList.addAll(historyList);
+      ChargingHistoryController.instance.historyList.add(historyModel);
+      ChargingHistoryController.instance.historyList = ChargingHistoryController
+          .instance.historyList
+          .toSet()
+          .toList(); //removes duplicates from list
+      await ChargingHistoryController.instance.setChargHistory(
+        history: ChargingHistoryController.instance.historyList,
+      );
+      // debugPrint(
+      //     'historyy: ${ChargingHistoryController.instance.historyList.length}');
+      ChargingHistoryController.instance.historyList
+          .addAll(ChargingHistoryController.instance.historyList);
       ChargingHistoryController.instance.update();
+      update();
     }
   }
 
@@ -110,13 +118,14 @@ class BatteryInfoHandler extends GetxController {
 
   //*ClearData
   Future<void> clearChargingHistory() async {
-    final storageInstance = await ChargingHistoryStorage.getInstance();
+    final storageInstance = await BatteryAlertStorage.getInstance();
 
     await storageInstance.clearChargingHistory();
 
-    historyList = [];
+    // ChargingHistoryController.instance.historyList = [];
     ChargingHistoryController.instance.historyList.clear();
-    ChargingHistoryController.instance.update();
+    // ChargingHistoryController.instance.update();
+    // update();
     Fluttertoast.showToast(msg: 'Charging history data cleared');
   }
 

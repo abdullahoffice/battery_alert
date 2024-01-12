@@ -1,7 +1,11 @@
 import 'package:battery_alert/battery_alert.dart';
 
 class CustomAppBar extends GetWidget {
-  const CustomAppBar({super.key});
+  final String title;
+  const CustomAppBar({
+    super.key,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +20,9 @@ class CustomAppBar extends GetWidget {
           },
         ),
       ),
-      backgroundColor: const Color(0xff0F9F59),
+      backgroundColor: AppColors.backgroundColor,
       title: Text(
-        'Battery Usage',
+        title,
         style: BTextTheme.lightTextTheme.titleSmall,
       ),
     );

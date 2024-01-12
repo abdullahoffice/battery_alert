@@ -5,10 +5,9 @@ class ChargeHistoryContainer extends GetView<ChargingHistoryController> {
 
   @override
   Widget build(BuildContext context) {
-      return GetBuilder<ChargingHistoryController>(
+    return GetBuilder<ChargingHistoryController>(
       initState: (state) async {
         BatteryInfoHandler.instance.startListening();
-        await controller.getCharhistory();
       },
       builder: (context) {
         return SingleChildScrollView(

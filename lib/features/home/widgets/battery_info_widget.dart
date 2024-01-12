@@ -14,7 +14,7 @@ class _BatteryInfoWidgetState extends State<BatteryInfoWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-      child: StreamBuilder(
+      child: StreamBuilder( 
         stream: BatteryInfoPlugin().androidBatteryInfoStream,
         builder: (context, snapshot) {
           String? healthStatus = snapshot.data?.health!.split('_').last;
@@ -32,7 +32,7 @@ class _BatteryInfoWidgetState extends State<BatteryInfoWidget> {
               healthStatus: "$healthStatus",
               temperatureValue: '${(snapshot.data!.temperature!)} °C',
               voltageValue: '${(snapshot.data?.voltage)! / 1000} mV',
-              capacityValue: '${(snapshot.data?.batteryCapacity)! / 100} mAh',
+              capacityValue: '${(snapshot.data!.batteryCapacity!) / 1000} mAh',
               batteryPercentage: '${(snapshot.data?.batteryLevel)} %',
             );
           } else {

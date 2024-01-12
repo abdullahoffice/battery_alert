@@ -30,7 +30,6 @@ dependencies:
   battery_info: ^1.1.1
   battery_plus: ^5.0.2
   device_info_plus: ^9.1.1
-  battery: ^2.0.3
   expand_widget: ^3.1.1
   percent_indicator: ^4.2.3
   intl: ^0.18.1
@@ -40,7 +39,10 @@ dependencies:
   firebase_auth: ^4.15.3
   firebase_core: ^2.24.2
   device_apps: ^2.2.0
-  installed_apps: ^1.4.0
+  flutter_background_service: ^5.0.5
+  flutter_local_notifications: ^16.3.0
+  flutter_background_service_android: ^6.2.2
+  # installed_apps: ^1.4.0
 
 dev_dependencies:
   flutter_test:
@@ -51,11 +53,11 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-
   assets:
     - assets/images/
     - assets/images/icons/
     - assets/svgs/
+    - assets/gifs/
 
   fonts:
     - family: Rubik

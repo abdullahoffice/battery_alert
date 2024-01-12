@@ -8,6 +8,10 @@ class ChargerTestingView extends GetView<ChargerTestingController> {
     return SafeArea(
       child: Scaffold(
         body: _body,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.h),
+          child: const CustomAppBar(title: 'Charger Testing'),
+        ),
       ),
     );
   }
@@ -23,36 +27,67 @@ class ChargerTestingView extends GetView<ChargerTestingController> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    //*TopNavigationBar
-                    SizedBox(height: 20.h),
-                    const NavigationHeader(title: 'Charger Testing'),
-
                     //*
                     SizedBox(height: 20.h),
-                    _testingValueList,
+                    StreamBuilder(
+                      stream: BatteryInfoPlugin().androidBatteryInfoStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomContainer(
+                                      valueText: 'Min Value',
+                                      value: '${controller.calculateMinCurrent(
+                                        snapshot.data?.currentNow!.toDouble(),
+                                        snapshot.data?.currentAverage!
+                                            .toDouble(),
+                                      )} mA'),
+                                  CustomContainer(
+                                      valueText: 'Current',
+                                      value:
+                                          '${(snapshot.data?.currentNow)! / 1000} mAh'),
+                                  CustomContainer(
+                                      valueText: 'Max Value',
+                                      value:
+                                          '${(snapshot.data?.voltage)! / 1000} V'),
+                                ],
+                              ),
+                              //*CircularBattery
+                              SizedBox(height: 40.h),
+                              const BatteryProgressWidget(),
 
-                    //*CircularBattery
-                    SizedBox(height: 40.h),
-                    const BatteryProgressWidget(),
+                              //*
+                              SizedBox(height: 50.h),
+                              Text(
+                                controller.isTimerRunning
+                                    ? 'Dis-Charging 3.782 Volt'
+                                    : 'Charger quality: ${controller.calculateChargerStatus()}' ??
+                                        '',
+                                style: BTextTheme.lightTextTheme.bodyMedium,
+                              ),
 
-                    //*
-                    SizedBox(height: 50.h),
-                    Text(
-                      'Dis-Charging 3.782 Volt',
-                      style: BTextTheme.lightTextTheme.bodyMedium,
-                    ),
+                              //*
+                              SizedBox(height: 25.h),
+                              const TimerButton(),
 
-                    //*
-                    SizedBox(height: 25.h),
-                    testingButton(
-                      ontap: () {
-                        Get.dialog(const ConnectCharPopup());
+                              //*
+                              SizedBox(height: 34.h),
+                              _nativeAdsWidget,
+                            ],
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return const CircularProgressIndicator(
+                            color: AppColors.greenColor,
+                          );
+                        }
                       },
                     ),
-
-                    //*
-                    SizedBox(height: 34.h),
-                    _nativeAdsWidget,
                   ],
                 ),
               ),
@@ -61,58 +96,7 @@ class ChargerTestingView extends GetView<ChargerTestingController> {
         },
       );
 
-  //*TestingValuesList
-  Widget get _testingValueList => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ...List.generate(
-            controller.charTestingData.length,
-            (index) => Container(
-              width: 104.w,
-              height: 70.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.purpleColor,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    controller.charTestingData[index].valueText,
-                    style: BTextTheme.lightTextTheme.titleSmall,
-                  ),
-                  SizedBox(height: 3.h),
-                  Text(
-                    controller.charTestingData[index].value,
-                    style: BTextTheme.lightTextTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      );
-
-  //*Testing button
-  Widget testingButton({required VoidCallback ontap}) => GestureDetector(
-        onTap: ontap,
-        child: Container(
-          width: 260.w,
-          height: 77.h,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: AppColors.purpleColor,
-            boxShadow: [
-              AppDecorations.smallWhiteBoxShadow,
-              AppDecorations.smallboxShadow,
-            ],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text('Start Testing',
-              style: BTextTheme.lightTextTheme.headlineSmall),
-        ),
-      );
-
+  //*Ads
   Widget get _nativeAdsWidget => GestureDetector(
         child: Container(
           width: 210.w,

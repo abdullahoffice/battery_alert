@@ -17,6 +17,7 @@ class AppImages{
   static const String connectCharger = '${AppPath.assetsPath}${_basePath}connect_charger_image.png';
   
   //*AnimationImages
+  static const String animationBackground = '${AppPath.assetsPath}${_basePath}background_crausel.png';
   static const String animationOne = '${AppPath.assetsPath}${_basePath}animation_one.png';
   static const String animationTwo = '${AppPath.assetsPath}${_basePath}animation_two.png';
   static const String animationThree = '${AppPath.assetsPath}${_basePath}animation_third.png';

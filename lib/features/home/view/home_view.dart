@@ -21,9 +21,9 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget get _body => GetBuilder<HomeController>(
-    initState: (state){
-      BatteryInfoHandler.instance.startListening();
-    },
+        initState: (state) {
+          BatteryInfoHandler.instance.startListening();
+        },
         builder: (_) {
           return SizedBox(
             width: double.infinity,
@@ -69,13 +69,14 @@ class _HomeViewState extends State<HomeView> {
                               switchSettingCard(
                                 imgText: 'assets/images/icons/alarmIcon.svg',
                                 title1: 'Alarm \nsetting',
-                                onTap: () => Get.to(const AlarmSettingsView()),
+                                onTap: () =>
+                                    Get.to(() => const AlarmSettingsView()),
                               ),
                               switchSettingCard(
                                 imgText: 'assets/images/icons/chargeIcon.svg',
                                 title1: 'Charging \nAnimation',
                                 onTap: () =>
-                                    Get.to(const ChargingAnimationView()),
+                                    Get.to(() => const SelectAnimation()),
                               ),
                             ],
                           ),
@@ -91,15 +92,15 @@ class _HomeViewState extends State<HomeView> {
                                   cardBox(
                                     text1: 'Charging \nHistory',
                                     image: AppSvgs.batteryIcon,
-                                    onTap: () =>
-                                        Get.to(const ChargingHistoryView()),
+                                    onTap: () => Get.to(
+                                        () => const ChargingHistoryView()),
                                   ),
                                   SizedBox(height: 25.h),
                                   cardBox(
                                     text1: 'Battery \nInformation',
                                     image: AppSvgs.batteryIcon,
                                     onTap: () =>
-                                        Get.to(const BatteryInfoView()),
+                                        Get.to(() => const BatteryInfoView()),
                                   ),
                                 ],
                               ),
@@ -119,13 +120,14 @@ class _HomeViewState extends State<HomeView> {
                           cardBox(
                             text1: 'Battery \nusage ',
                             image: AppSvgs.batteryCellIcon,
-                            onTap: () => Get.to(const BatteryUsageView()),
+                            onTap: () => Get.to(() => const BatteryUsageView()),
                           ),
                           SizedBox(height: 25.h),
                           cardBox(
                             text1: 'charger \ntesting',
                             image: AppSvgs.chargerIcon,
-                            onTap: () => Get.to(const ChargerTestingView()),
+                            onTap: () =>
+                                Get.to(() => const ChargerTestingView()),
                           ),
                         ],
                       ),

@@ -89,7 +89,7 @@ class RateUsPopup extends GetWidget {
                             style: OutlinedButton.styleFrom(
                                 primary: Colors.white,
                                 side: BorderSide(
-                                    width: 1.w, color: AppColors.blackColor),
+                                    width: 1.w, color: AppColors.darkPurple),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0.r),
                                 )),
