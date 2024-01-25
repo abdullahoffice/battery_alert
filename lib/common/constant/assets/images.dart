@@ -12,6 +12,8 @@ class AppImages{
   static const String thumbsUpIcon= '${AppPath.assetsPath}${_basePath}thumbs_up.png';
   static const String starIcon= '${AppPath.assetsPath}${_basePath}star_icon.png';
   static const String crownImage = '${AppPath.assetsPath}${_basePath}crown_image.png';
+  static const String alarmOff = '${AppPath.assetsPath}${_basePath}AlarmOff.png';
+  static const String alarmOn = '${AppPath.assetsPath}${_basePath}AlarmOn.png';
 
   //*Connect charger
   static const String connectCharger = '${AppPath.assetsPath}${_basePath}connect_charger_image.png';

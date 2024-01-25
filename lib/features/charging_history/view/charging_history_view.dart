@@ -8,6 +8,53 @@ class ChargingHistoryView extends GetView<ChargingHistoryController> {
     return SafeArea(
       child: Scaffold(
         body: _body,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.h),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomIconButton(
+                iconPath: AppSvgs.backArrow,
+                onPress: () {
+                  Get.back();
+                },
+              ),
+            ),
+            backgroundColor: AppColors.backgroundColor,
+            title: Row(
+              children: [
+                Text(
+                  'Charging History',
+                  style: BTextTheme.lightTextTheme.titleSmall,
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap:
+                      ChargingHistoryController.instance.clearChargingHistory,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.clearButtonColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Clear',
+                          style: BTextTheme.lightTextTheme.titleSmall,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -21,12 +68,10 @@ class ChargingHistoryView extends GetView<ChargingHistoryController> {
               decoration: AppDecorations.backgroundImageDecoration,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
-                child: SingleChildScrollView(
+                child: const SingleChildScrollView(
                   child: Column(
                     children: [
-                      const NavigationHeader(title: 'Battery Information'),
-                      SizedBox(height: 30.h),
-                      const ChargeHistoryContainer(),
+                      ChargeHistoryContainer(),
                     ],
                   ),
                 ),
@@ -36,4 +81,3 @@ class ChargingHistoryView extends GetView<ChargingHistoryController> {
         },
       );
 }
-

@@ -1,13 +1,8 @@
 import '../../../battery_alert.dart';
 
-class BatteryInfoView extends StatefulWidget {
-  const BatteryInfoView({Key? key}) : super(key: key);
+class BatteryInfoView extends GetView<BatteryViewController> {
+  const BatteryInfoView({super.key});
 
-  @override
-  _BatteryInfoViewState createState() => _BatteryInfoViewState();
-}
-
-class _BatteryInfoViewState extends State<BatteryInfoView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -18,6 +13,9 @@ class _BatteryInfoViewState extends State<BatteryInfoView> {
   }
 
   Widget get _body => GetBuilder<BatteryViewController>(
+        initState: (state) {
+          controller.updateBatteryInformation(AndroidBatteryInfo());
+        },
         builder: (_) {
           return SizedBox(
             width: double.infinity,
@@ -33,7 +31,110 @@ class _BatteryInfoViewState extends State<BatteryInfoView> {
 
                     //*
                     // const SizedBox(height: 20),
-                    const BatteryProgressWidget(),
+                    // const BatteryProgressWidget(),
+                    Container(
+                      height: 210.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color(0xff0FD46D),
+                        boxShadow: [
+                          AppDecorations.batteryProgressShadow,
+                        ],
+                      ),
+                      child: Center(
+                        child: Container(
+                          height: 203.h,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff190051),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Container(
+                              height: 175.h,
+                              decoration: const BoxDecoration(
+                                color: Color(0xff0FD46D),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Container(
+                                  height: 155.h,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xff1C005B),
+                                  ),
+                                  child: Center(
+                                    child: SizedBox(
+                                      height: 110.h,
+                                      width: 73.w,
+                                      child: StreamBuilder(
+                                        stream: BatteryInfoPlugin()
+                                            .androidBatteryInfoStream,
+                                        builder: (context,
+                                            AsyncSnapshot<dynamic> snapshot) {
+                                          if (snapshot.hasData) {
+                                            return LiquidLinearProgressIndicator(
+                                              value: double.parse(
+                                                  '${snapshot.data!.batteryLevel! / 100}%'),
+                                              valueColor:
+                                                  const AlwaysStoppedAnimation(
+                                                Color(0xff0FD46D),
+                                              ),
+                                              backgroundColor: Colors.white,
+                                              borderColor:
+                                                  const Color(0xff0FD46D),
+                                              borderWidth: 1.0,
+                                              borderRadius: 10.0,
+                                              direction: Axis.vertical,
+                                              center: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    snapshot.data!.batteryLevel
+                                                        .toString(),
+                                                    style: BTextTheme
+                                                        .lightTextTheme
+                                                        .headlineSmall
+                                                        ?.copyWith(
+                                                      color: AppColors
+                                                          .backgroundColor,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 1.h),
+                                                    child: Text(
+                                                      '%',
+                                                      style: BTextTheme
+                                                          .lightTextTheme
+                                                          .bodyLarge!
+                                                          .copyWith(
+                                                        color: AppColors
+                                                            .backgroundColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
 
                     //*
                     // const SizedBox(height: 20),

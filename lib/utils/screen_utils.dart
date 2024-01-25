@@ -15,13 +15,13 @@ class AppScreenUtils {
 
   static String getChargingStatus(ChargingStatus? chargingStatus) {
     if (chargingStatus == null) {
-      return 'Unknown';
+      return 'Not Charrging';
     }
     switch (chargingStatus) {
       case ChargingStatus.Charging:
         return 'Charging';
       case ChargingStatus.Discharging:
-        return 'Discharging';
+        return 'Not Chaging';
       case ChargingStatus.Full:
         return 'Full';
       case ChargingStatus.Unknown:

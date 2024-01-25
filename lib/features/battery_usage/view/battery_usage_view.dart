@@ -41,9 +41,9 @@ class BatteryUsageView extends GetView<BatteryUsageController> {
   Widget get _body => GetBuilder<BatteryUsageController>(initState: (_) {
         WidgetsBinding.instance.addPostFrameCallback(
           (timeStamp) {
-            controller.getDailyUsageStats();
+            // controller.getDailyUsageStats();
             controller.getWeeklyUsageStats();
-            controller.getAppIcons();
+            controller.getDailyUsageStats();
           },
         );
       }, builder: (_) {

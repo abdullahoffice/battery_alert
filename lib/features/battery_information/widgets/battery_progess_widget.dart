@@ -56,67 +56,53 @@ class _BatteryProgressWidgetState extends State<BatteryProgressWidget> {
                     child: SizedBox(
                       height: 110.h,
                       width: 73.w,
-                      child: FutureBuilder<AndroidBatteryInfo?>(
-                        future: BatteryInfoPlugin().androidBatteryInfo,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          } else if (snapshot.hasError) {
-                            // Handle error case
-                            return const Center(
-                              child: Text('Error loading battery info'),
-                            );
-                          } else if (!snapshot.hasData ||
-                              snapshot.data == null) {
-                            // Handle case where data is null
-                            return const Center(
-                              child: Text('No battery info available'),
-                            );
-                          } else {
-                            return LiquidLinearProgressIndicator(
-                              value: double.parse(
-                                  '${snapshot.data!.batteryLevel! / 100}'),
-                              valueColor: const AlwaysStoppedAnimation(
-                                Color(0xff0FD46D),
-                              ),
-                              backgroundColor: Colors.white,
-                              borderColor: Color(0xff0FD46D),
-                              borderWidth: 1.0,
-                              borderRadius: 10.0,
-                              direction: Axis.vertical,
-                              center: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    snapshot.data!.batteryLevel.toString(),
-                                    style: BTextTheme
-                                        .lightTextTheme.headlineSmall
-                                        ?.copyWith(
-                                      color: AppColors.backgroundColor,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 1.h),
-                                    child: Text(
-                                      '%',
+                      child: StreamBuilder(
+                          stream: BatteryInfoPlugin().androidBatteryInfoStream,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return LiquidLinearProgressIndicator(
+                                value: double.parse(
+                                    '${snapshot.data!.batteryLevel! / 100}'),
+                                valueColor: const AlwaysStoppedAnimation(
+                                  Color(0xff0FD46D),
+                                ),
+                                backgroundColor: Colors.white,
+                                borderColor: const Color(0xff0FD46D),
+                                borderWidth: 1.0,
+                                borderRadius: 10.0,
+                                direction: Axis.vertical,
+                                center: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      snapshot.data!.batteryLevel.toString(),
                                       style: BTextTheme
-                                          .lightTextTheme.bodyLarge!
-                                          .copyWith(
+                                          .lightTextTheme.headlineSmall
+                                          ?.copyWith(
                                         color: AppColors.backgroundColor,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 1.h),
+                                      child: Text(
+                                        '%',
+                                        style: BTextTheme
+                                            .lightTextTheme.bodyLarge!
+                                            .copyWith(
+                                          color: AppColors.backgroundColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
-                          }
-                        },
-                      ),
+                          }),
                     ),
                   ),
                 ),

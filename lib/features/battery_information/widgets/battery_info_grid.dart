@@ -16,7 +16,7 @@ class _BatteryInfoGridState extends State<BatteryInfoGrid> {
     controller = Get.find<BatteryViewController>();
   }
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return StreamBuilder<AndroidBatteryInfo?>(
         stream: BatteryInfoPlugin().androidBatteryInfoStream,

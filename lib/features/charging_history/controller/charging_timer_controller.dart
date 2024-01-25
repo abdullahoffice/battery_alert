@@ -10,7 +10,7 @@ class ChargingTimerController extends GetxController {
         addTimeCallback();
       });
     }
-  }
+  } 
 
   void stopChargingTimer() {
     _timer?.cancel();

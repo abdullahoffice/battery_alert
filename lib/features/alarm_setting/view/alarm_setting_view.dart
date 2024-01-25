@@ -8,6 +8,10 @@ class AlarmSettingsView extends GetView<AlarmSettingsController> {
     return SafeArea(
       child: Scaffold(
         body: _body,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.h),
+          child: const CustomAppBar(title: 'Alarm Setting'),
+        ),
       ),
     );
   }
@@ -25,13 +29,30 @@ class AlarmSettingsView extends GetView<AlarmSettingsController> {
                       EdgeInsets.symmetric(vertical: 18.h, horizontal: 18.w),
                   child: Column(
                     children: [
-                      const NavigationHeader(title: 'Alarm Setting'),
-                      SizedBox(height: 20.h),
-                      //*
-                      const BatteryFullAlarmWidget(),
-                      SizedBox(height: 20.h),
-                      const BatteryFullAlarmWidget(),
+                      // //* Full Battery Alarm
+                      BatteryFullAlarmWidget(
+                        text: 'Full Battery Alarm',
+                        onChanged: (value) =>
+                            controller.handleFullBatteryAlarm(value: value),
+                        value: controller.fullBatteryAlarm,
+                        sliderText: '80%',
+                        onSliderChanged: (double value) =>
+                            controller.swithFunc(value),
+                        sliderValue: 20,
+                      ),
 
+                      // //*Low Battery Alarm
+                      SizedBox(height: 20.h),
+                      BatteryFullAlarmWidget(
+                        text: 'Full Battery Alarm',
+                        onChanged: (value) =>
+                            controller.handleLowBatteryAlarm(value: value),
+                        value: controller.lowBatteryAlarm,
+                        sliderText: '80%',
+                        onSliderChanged: (double value) =>
+                            controller.swithFunc(value),
+                        sliderValue: 20,
+                      ),
                       //*
                       SizedBox(height: 20.h),
                       const RingtoneSetting(),
@@ -48,4 +69,5 @@ class AlarmSettingsView extends GetView<AlarmSettingsController> {
           );
         },
       );
+  
 }

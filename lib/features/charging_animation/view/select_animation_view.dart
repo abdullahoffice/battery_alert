@@ -1,6 +1,6 @@
 import '../../../battery_alert.dart';
 
-int globalSelectedIndex = 0;
+int globalSelectedIndex = 1;
 
 class SelectAnimation extends GetView<CharAnimController> {
   const SelectAnimation({super.key});
@@ -33,22 +33,26 @@ class SelectAnimation extends GetView<CharAnimController> {
                 SizedBox(height: 76.h),
                 Expanded(
                   flex: 7,
-                  child: GestureDetector(
-                    onTap: () {
-                      controller.saveSelectedImage(
-                        imagePath: controller
-                            .chargingAnimationData[globalSelectedIndex].images,
-                      );
-                      CharAnimController.instance.getSelectedImage();
-                      Get.to(() => const AnimationView());
-                      debugPrint(
-                          'index: ${controller.chargingAnimationData[globalSelectedIndex].images}');
-                      debugPrint('Get: ${controller.imageData}');
-                    },
-                    child: CarouselSlider.builder(
-                      itemCount: controller.chargingAnimationData.length,
-                      itemBuilder: (context, index, pageViewIndex) {
-                        return Padding(
+                  child: CarouselSlider.builder(
+                    itemCount: controller.chargingAnimationData.length,
+                    itemBuilder: (context, index, pageViewIndex) {
+                      return GestureDetector(
+                        onTap: () {
+                          controller.saveSelectedImage(
+                            imagePath:
+                                controller.chargingAnimationData[index].images,
+                          );
+                          if (HomeController.instance.animationBoolValue) {
+                            debugPrint(
+                                'Value: ${HomeController.instance.animationBoolValue}');
+                            Get.to(() => const AnimationView());
+                          }
+                          CharAnimController.instance.getSelectedImage();
+                          debugPrint(
+                              'index: ${controller.chargingAnimationData[globalSelectedIndex].images}');
+                          // debugPrint('Get: ${controller.imageData}');
+                        },
+                        child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.0.w),
                           child: Stack(
                             fit: StackFit.expand,
@@ -71,21 +75,21 @@ class SelectAnimation extends GetView<CharAnimController> {
                               ),
                             ],
                           ),
-                        );
+                        ),
+                      );
+                    },
+                    options: CarouselOptions(
+                      // height: 300,
+                      // autoPlay: true,
+                      // enlargeCenterPage: true,
+                      aspectRatio: 14 / 7.dg,
+                      viewportFraction: 0.9.dg,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+                      enlargeFactor: 0.4.dg,
+                      onPageChanged: (index, reason) {
+                        globalSelectedIndex = index;
                       },
-                      options: CarouselOptions(
-                        // height: 300,
-                        // autoPlay: true,
-                        // enlargeCenterPage: true,
-                        aspectRatio: 14 / 7.dg,
-                        viewportFraction: 0.9.dg,
-                        enlargeCenterPage: true,
-                        enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-                        enlargeFactor: 0.4.dg,
-                        onPageChanged: (index, reason) {
-                          globalSelectedIndex = index;
-                        },
-                      ),
                     ),
                   ),
                 ),

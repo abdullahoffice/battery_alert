@@ -58,25 +58,27 @@ class BatteryViewController extends GetxController {
 
   //*
   Future<void> updateBatteryInformation(AndroidBatteryInfo batteryInfo) async {
-    String healthStatus = batteryInfo.health!.split('_').last;
+    if (batteryInfo.health != null) {
+      String healthStatus = batteryInfo.health!.split('_').last;
 
-    AndroidDeviceInfoModel? deviceInfo = await getAndroidDeviceInfo();
-    debugPrint('');
-    batterInformationData[0].subTitle =
-        AppScreenUtils.getChargingStatus(batteryInfo.chargingStatus);
+      AndroidDeviceInfoModel? deviceInfo = await getAndroidDeviceInfo();
+      debugPrint('');
+      batterInformationData[0].subTitle =
+          AppScreenUtils.getChargingStatus(batteryInfo.chargingStatus);
 
-    batterInformationData[1].subTitle = '${batteryInfo.temperature ?? 0}°C';
-    batterInformationData[2].subTitle = '${batteryInfo.voltage! / 1000}v';
-    batterInformationData[3]
-        .updateSubTitle(batteryInfo.technology ?? 'Unknown');
-    batterInformationData[4].updateSubTitle(healthStatus);
-    batterInformationData[5].updateSubTitle(
-        batteryInfo.pluggedStatus == "plugged" ? "AC" : "DC"); //Charging type
-    batterInformationData[6].updateSubTitle(deviceInfo!.model ?? 'Unknown');
-    batterInformationData[7]
-        .updateSubTitle('${batteryInfo.batteryCapacity! / 100} mAh');
-    batterInformationData[8]
-        .updateSubTitle(deviceInfo.androidVersion ?? 'Unknown');
-    batterInformationData[9].updateSubTitle(deviceInfo.buildId ?? 'Unknown');
+      batterInformationData[1].subTitle = '${batteryInfo.temperature ?? 0}°C';
+      batterInformationData[2].subTitle = '${batteryInfo.voltage! / 1000}v';
+      batterInformationData[3]
+          .updateSubTitle(batteryInfo.technology ?? 'Unknown');
+      batterInformationData[4].updateSubTitle(healthStatus);
+      batterInformationData[5].updateSubTitle(
+          batteryInfo.pluggedStatus == "plugged" ? "AC" : "DC"); //Charging type
+      batterInformationData[6].updateSubTitle(deviceInfo!.model ?? 'Unknown');
+      batterInformationData[7]
+          .updateSubTitle('${batteryInfo.batteryCapacity! / 100} mAh');
+      batterInformationData[8]
+          .updateSubTitle(deviceInfo.androidVersion ?? 'Unknown');
+      batterInformationData[9].updateSubTitle(deviceInfo.buildId ?? 'Unknown');
+    }
   }
 }

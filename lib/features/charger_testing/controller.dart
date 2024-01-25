@@ -25,6 +25,8 @@ class ChargerTestingController extends GetxController {
   void addTime() {
     const addSeconds = 1;
     duration += const Duration(seconds: addSeconds);
+    // duration += const Duration(milliseconds: addSeconds);
+    // update();
   }
 
   Future<void> startTimer() async {
@@ -69,24 +71,27 @@ class ChargerTestingController extends GetxController {
   }
 
   //
-  String calculateChargerStatus() {
+  String? calculateChargerStatus() {
+    if (plugOutBattery == null || plugInBattery == null) {
+      return null; // or provide a default value if appropriate
+    }
     int batteryLevelDifference = plugOutBattery! - plugInBattery!;
 
     debugPrint('Battery Level Difference: $batteryLevelDifference');
 
-    if (batteryLevelDifference < 0 && storedMinutes > 1) {
-      chargerStatus = "Very Poor";
-    } else if (batteryLevelDifference == 0 && storedMinutes > 1) {
+    if (batteryLevelDifference > 1 && storedMinutes > 3) {
       chargerStatus = "Poor";
-    } else if (batteryLevelDifference == 1 && storedMinutes <= 1) {
+    } else if ((batteryLevelDifference == 1 && storedMinutes <= 3)) {
+      chargerStatus = "Normal";
+    } else if (batteryLevelDifference == 1 && storedMinutes <= 2) {
       chargerStatus = "Good";
-    } else if (batteryLevelDifference > 1 && storedMinutes <= 1) {
+    } else if (batteryLevelDifference == 1 && storedMinutes <= 1) {
       chargerStatus = "Excellent";
     } else {
-      chargerStatus = "Poor";
+      chargerStatus = "Not Charged Yet";
     }
+    debugPrint('Charger status: $chargerStatus');
     return chargerStatus;
-    // debugPrint('Charger status: $chargerStatus');
   }
 
   void onTap() {
@@ -108,36 +113,47 @@ class ChargerTestingController extends GetxController {
   String get formattedTime {
     final minutesPart = twoDigits(duration.inMinutes.remainder(60));
     final secondsPart = twoDigits(duration.inSeconds.remainder(60));
-    final millisecondsPart =
-        twoDigits(duration.inMilliseconds.remainder(1000), minLength: 3)
-            .substring(1);
+    final millisecondsPart = twoDigits(
+      duration.inMilliseconds.remainder(1000),
+    );
     storedMinutes = duration.inMinutes.remainder(60);
-    return '$minutesPart:$secondsPart:$millisecondsPart';
+    // return '$minutesPart:$secondsPart:$millisecondsPart';
+    return '$minutesPart:$secondsPart';
   }
-}
 
+  // Timer? timerRemain;
+  // int miliSeconds = 0;
+  // int minutesRe = 0;
+  // int secondsRe = 0;
+  // bool isRunning = false;
+  // bool mounted = false;
+  // void startTimerRe() {
+  //   miliSeconds = 0;
+  //   minutesRe = 0;
+  //   secondsRe = 0;
+  //   // chargerSat = '';
 
+  //   timerRemain = Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
+  //     isRunning = true;
+  //     if (!mounted || minutesRe == 3) {
+  //       t.cancel();
+  //       update();
+  //     }
 
-
-
-
-
-
-// Charging state
-  // void updateChargerStatus() {
-  //   int minutesRemaining = duration.inMinutes.remainder(60);
-  //   int secondsRemaining = duration.inSeconds.remainder(60);
-
-  //   if ((minutesRemaining == 0 && secondsRemaining > 1) ||
-  //       (minutesRemaining > 1)) {
-  //     chargerStatus = "Very Poor";
-  //   } else if (minutesRemaining == 0 && secondsRemaining == 0) {
-  //     chargerStatus = "Poor";
-  //   } else if (minutesRemaining == 1 && secondsRemaining <= 1) {
-  //     chargerStatus = "Good";
-  //   } else if (minutesRemaining > 1 && secondsRemaining < 1) {
-  //     chargerStatus = "Excellent";
-  //   } else {
-  //     chargerStatus = "Poor";
-  //   }
+  //     miliSeconds += 100;
+  //     if (miliSeconds == 1000) {
+  //       miliSeconds = 0;
+  //       secondsRe++;
+  //       if (secondsRe == 60) {
+  //         secondsRe = 0;
+  //         minutesRe++;
+  //         if (minutesRe == 60) {
+  //           minutesRe = 0;
+  //           miliSeconds++;
+  //         }
+  //       }
+  //     }
+  //   });
+  //   update();
   // }
+}

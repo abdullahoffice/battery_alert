@@ -6,7 +6,7 @@ class TimerButton extends GetView<ChargerTestingController> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ChargerTestingController>(initState: (state) {
-      controller.startTimer();
+      // controller.startTimer();
     }, builder: (context) {
       return GestureDetector(
         onTap: controller.onTap,

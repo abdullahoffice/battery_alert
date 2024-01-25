@@ -1,28 +1,27 @@
 import '../../../battery_alert.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
 
-class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: _body,
-        // appBar: AppBar(
-        //   backgroundColor: Color(0xff00FD65),
-        //   // shadowColor: Colors.black,
-        // ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.h),
+          child: const AppBarView(),
+        ),
       ),
     );
   }
 
   Widget get _body => GetBuilder<HomeController>(
         initState: (state) {
-          BatteryInfoHandler.instance.startListening();
+          // TODO: a
+          // BatteryInfoHandler.instance.startListening();
+          ChargingHistoryController.instance.startListening();
+          ChargingHistoryController.instance.getCharhistory();
         },
         builder: (_) {
           return SizedBox(
@@ -34,13 +33,6 @@ class _HomeViewState extends State<HomeView> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    //*TopNavigationBar
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                      child: const AppBarView(),
-                    ),
-
                     //*HeaderText
                     Padding(
                       padding:
@@ -65,18 +57,29 @@ class _HomeViewState extends State<HomeView> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              //*SwitchContainers
-                              switchSettingCard(
+                              //* Alarm setting
+                              SwitchSettingCard(
                                 imgText: 'assets/images/icons/alarmIcon.svg',
                                 title1: 'Alarm \nsetting',
                                 onTap: () =>
                                     Get.to(() => const AlarmSettingsView()),
+                                onChanged: (value) {
+                                  controller.handleAlarmSetting(value: value);
+                                },
+                                value: controller.alarmSettingBoolValue,
                               ),
-                              switchSettingCard(
+
+                              //* Charging Animation
+                              SwitchSettingCard(
                                 imgText: 'assets/images/icons/chargeIcon.svg',
                                 title1: 'Charging \nAnimation',
                                 onTap: () =>
                                     Get.to(() => const SelectAnimation()),
+                                onChanged: (value) {
+                                  controller.handleAnimationSwitch(
+                                      value: value);
+                                },
+                                value: controller.animationBoolValue,
                               ),
                             ],
                           ),

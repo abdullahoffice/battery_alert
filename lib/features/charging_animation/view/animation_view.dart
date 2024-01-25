@@ -11,9 +11,9 @@ class AnimationView extends GetView<CharAnimController> {
   }
 
   Widget get _body => GetBuilder<CharAnimController>(initState: (state) {
-        Timer(const Duration(seconds: 3), () {
-          Get.back();
-        });
+        // Timer(const Duration(seconds: 3), () {
+        //   Get.back();
+        // });
       }, builder: (_) {
         return StreamBuilder(
             stream: BatteryInfoPlugin().androidBatteryInfoStream,

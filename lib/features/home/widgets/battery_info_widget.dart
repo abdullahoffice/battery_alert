@@ -14,15 +14,19 @@ class _BatteryInfoWidgetState extends State<BatteryInfoWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-      child: StreamBuilder( 
+      child: StreamBuilder(
         stream: BatteryInfoPlugin().androidBatteryInfoStream,
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
           String? healthStatus = snapshot.data?.health!.split('_').last;
           // var data = snapshot.data!.chargingStatus.toString();
           if (snapshot.hasData) {
+            var info = DeviceInfoPlugin().androidInfo;
+            // info.battery.
             // print(data);
+            AndroidBatteryInfo batteryInfo = AndroidBatteryInfo();
             return PowerConsumpCard(
-              statusText: '${(snapshot.data?.pluggedStatus)}', //adb tcpip 5555
+              statusText:
+                  AppScreenUtils.getChargingStatus(snapshot.data?.chargingStatus),
               hourValue: snapshot.data!.batteryLevel == 100
                   ? 'Full'
                   : '${(snapshot.data!.chargeTimeRemaining! / 1000 / 60 / 60).truncate()}h ',
@@ -32,7 +36,8 @@ class _BatteryInfoWidgetState extends State<BatteryInfoWidget> {
               healthStatus: "$healthStatus",
               temperatureValue: '${(snapshot.data!.temperature!)} °C',
               voltageValue: '${(snapshot.data?.voltage)! / 1000} mV',
-              capacityValue: '${(snapshot.data!.batteryCapacity!) / 1000} mAh',
+              capacityValue:
+                  '${int.parse((snapshot.data!.batteryCapacity! / 1000).toStringAsFixed(0))} mAh',
               batteryPercentage: '${(snapshot.data?.batteryLevel)} %',
             );
           } else {

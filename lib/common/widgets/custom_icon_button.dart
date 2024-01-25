@@ -18,7 +18,7 @@ class CustomIconButton extends StatelessWidget {
         width: 40.w,
         height: 35.h,
         decoration: BoxDecoration(
-          color: const Color(0xff110136),
+          color: AppColors.clearButtonColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(

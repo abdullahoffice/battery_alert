@@ -24,12 +24,12 @@ class ChargerTestingView extends GetView<ChargerTestingController> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               decoration: AppDecorations.backgroundImageDecoration,
-              child: SingleChildScrollView(
+               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     //*
                     SizedBox(height: 20.h),
-                    StreamBuilder(
+                    StreamBuilder<AndroidBatteryInfo?>(
                       stream: BatteryInfoPlugin().androidBatteryInfoStream,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
@@ -56,7 +56,7 @@ class ChargerTestingView extends GetView<ChargerTestingController> {
                                           '${(snapshot.data?.voltage)! / 1000} V'),
                                 ],
                               ),
-                              //*CircularBattery
+                              //*CircularBattery   
                               SizedBox(height: 40.h),
                               const BatteryProgressWidget(),
 
@@ -64,9 +64,8 @@ class ChargerTestingView extends GetView<ChargerTestingController> {
                               SizedBox(height: 50.h),
                               Text(
                                 controller.isTimerRunning
-                                    ? 'Dis-Charging 3.782 Volt'
-                                    : 'Charger quality: ${controller.calculateChargerStatus()}' ??
-                                        '',
+                                    ? 'Charger Status: ${AppScreenUtils.getChargingStatus(snapshot.data?.chargingStatus)}'
+                                    : 'Charger quality: ${controller.calculateChargerStatus() ?? 'N/A'}',
                                 style: BTextTheme.lightTextTheme.bodyMedium,
                               ),
 

@@ -1,7 +1,29 @@
 import '../../../battery_alert.dart';
 
-class BatteryFullAlarmWidget extends GetWidget<AlarmSettingsController> {
-  const BatteryFullAlarmWidget({super.key});
+class BatteryFullAlarmWidget extends StatelessWidget {
+//   const BatteryFullAlarmWidget1({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
+// class BatteryFullAlarmWidget extends GetWidget<AlarmSettingsController> {
+  final String text;
+  final ValueChanged<bool> onChanged;
+  final bool value;
+  final String sliderText;
+  final ValueChanged<double> onSliderChanged;
+  final double sliderValue;
+  const BatteryFullAlarmWidget({
+    required this.sliderText,
+    required this.onSliderChanged,
+    required this.sliderValue,
+    required this.onChanged,
+    required this.value,
+    required this.text,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,22 +44,22 @@ class BatteryFullAlarmWidget extends GetWidget<AlarmSettingsController> {
               children: [
                 //*
                 Text(
-                  'Full Battery Alarm',
+                  text,
                   style: BTextTheme.lightTextTheme.bodyMedium,
                 ),
-
+    
                 //*SwitchButton
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
+                    width: 40.w,
                     height: 35.h,
                     child: FittedBox(
+                      fit: BoxFit.fill,
                       child: Switch(
-                        value: true,
-                        activeTrackColor: const Color(
-                          0xff120137,
-                        ), // Set background color
-                        onChanged: (value) => (),
+                        inactiveTrackColor: AppColors.backgroundColor,
+                        onChanged: onChanged,
+                        value: value,
                       ),
                     ),
                   ),
@@ -45,7 +67,7 @@ class BatteryFullAlarmWidget extends GetWidget<AlarmSettingsController> {
               ],
             ),
           ),
-
+    
           //*textWithContainer
           SizedBox(height: 10.h),
           Container(
@@ -58,7 +80,7 @@ class BatteryFullAlarmWidget extends GetWidget<AlarmSettingsController> {
               style: BTextTheme.lightTextTheme.labelLarge,
             ),
           ),
-
+    
           //*ContainerFullBatteryALarm
           SizedBox(height: 10.h),
           Container(
@@ -72,22 +94,22 @@ class BatteryFullAlarmWidget extends GetWidget<AlarmSettingsController> {
               children: [
                 Expanded(
                   child: SliderTheme(
-                    data:  SliderThemeData(
+                    data: SliderThemeData(
                       trackHeight: 5.h,
                       thumbShape: RoundSliderThumbShape(
                         enabledThumbRadius: 9.h,
                       ),
                     ),
                     child: Slider(
-                      value: controller.currentSliderValue,
+                      value: sliderValue,
                       activeColor: const Color(0xff280C68),
                       secondaryTrackValue: 80,
                       max: 100,
-                      onChanged: (double value) => controller.swithFunc(value),
+                      onChanged: onSliderChanged,
                     ),
                   ),
                 ),
-                const Text('80%'),
+                Text(sliderText),
               ],
             ),
           ),

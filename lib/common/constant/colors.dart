@@ -1,13 +1,15 @@
 import '../../battery_alert.dart';
 
 class AppColors {
-  static const Color primaryColor = Color(0xFFFFFFFF);
+  static const Color primaryColor = Color(0xFFFFFFFF); 
   static const Color secondaryColor = Color(0xFF4CD964);
+  static const Color lightGreen = Color(0xff0AC25D);
   static const Color accentColor = Color(0xFFFF2D55);
   static const Color backgroundColor = Color(0xFF190051);
   static const Color disabledColor = Color(0xFFBDBDBD);
   static const Color textColor = Color(0xFFFFFFFF);
   static const Color iconButtonColor = Color(0xff130338);
+  static const Color clearButtonColor =  Color(0xff110136);
   static const Color darkPurple = Color(0xff130338);
   static const Color black = Colors.black;
   static const Color purpleColor = Color(0xff2F1271);
