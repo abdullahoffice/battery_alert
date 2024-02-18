@@ -13,6 +13,30 @@ class AppBinding extends Bindings {
     Get.put(ChargerTestingController());
     Get.put(CharAnimController());
     Get.put(PremiumController());
-    // Get.put(BatteryInfoHandler());
+    Get.put(GlobalController());
   }
 }
+
+// class AppBinding extends Binding {
+//   @override
+//   List<Bind> dependencies() {
+//     return binds;
+//   }
+
+//   static List<Bind> binds = [
+//     ///Networking
+
+//     ///Controllers
+//     Bind.put(SplashController()),
+//     Bind.put(HomeController()),
+//     Bind.put(SettingController()),
+//     Bind.put(BatteryViewController()),
+//     Bind.put(ChargingHistoryController()),
+//     Bind.put(AlarmSettingsController()),
+//     Bind.put(BatteryUsageController()),
+//     Bind.put(ChargerTestingController()),
+//     Bind.put(CharAnimController()),
+//     Bind.put(PremiumController()),
+//     Bind.put(GlobalController()),
+//   ];
+// }

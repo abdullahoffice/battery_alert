@@ -24,7 +24,7 @@ class SettingsListItem extends StatelessWidget {
           onTap: onTap,
           child: Container(
             height: 76.0,
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             color: currentIndex == index
                 ? AppColors.secondaryColor
                 : Colors.transparent,

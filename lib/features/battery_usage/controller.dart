@@ -7,13 +7,11 @@ class BatteryUsageController extends GetxController {
   // Variables for Daily Usage Stats
   List<AppUsageInfo> dailyUsageApp = [];
   List<double> percentages = [];
+  List dailyAllApps = [];
 
   // Variables for Weekly Usage Stats
   List<AppUsageInfo> weeklyUsageApps = [];
   List<double> weeklyPercentages = [];
-
-  // Variable for all app
-  List dailyAllApps = [];
   List weeklyAllApps = [];
 
   //* Fetching Daily Usage Stats
@@ -22,10 +20,11 @@ class BatteryUsageController extends GetxController {
       debugPrint('Daily All Apps Length: ${dailyAllApps.length}');
 
       DateTime endDate = DateTime.now();
-      DateTime startDate =
-          DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
+      DateTime startDate = endDate.subtract(const Duration(days: 1));
       dailyUsageApp = await AppUsage().getAppUsage(startDate, endDate);
+      
 
+      // Loop through each app's usage
       List<dynamic> apps = await getInstalledApps();
       List matchingApps = apps
           .where(
@@ -37,17 +36,18 @@ class BatteryUsageController extends GetxController {
       matchingApps.sort((a, b) => a.packageName.compareTo(b.packageName));
       dailyAllApps = matchingApps;
 
-      update();
-      debugPrint('Daily Info: ${dailyUsageApp.length}');
-      debugPrint('daily appIcons: ${dailyAllApps.length}');
-
+      // Calculate total usage in seconds
       double totalUsageInSeconds = dailyUsageApp.fold(
           0, (previous, info) => previous + info.usage.inSeconds.toDouble());
+
+      // Calculate percentages
       percentages = dailyUsageApp
           .map((info) =>
               (info.usage.inSeconds.toDouble() / totalUsageInSeconds) * 100)
           .toList();
       update();
+      debugPrint('Daily Info: ${dailyUsageApp.length}');
+      debugPrint('daily appIcons: ${dailyAllApps.length}');
     } on DeviceApps catch (exception) {
       debugPrint('$exception');
     } on AppUsageException catch (exception) {
@@ -61,23 +61,21 @@ class BatteryUsageController extends GetxController {
       debugPrint('Daily All Apps Length: ${weeklyAllApps.length}');
 
       DateTime endDate = DateTime.now();
-      DateTime startDate = endDate.subtract(const Duration(days: 6));
+      DateTime startDate = endDate.subtract(const Duration(days: 7));
+// weeklyUsageApp  = await deviceapps.getAppUsage(startDate, endDate);
       weeklyUsageApps = await AppUsage().getAppUsage(startDate, endDate);
 
       List<dynamic> apps = await getInstalledApps();
-
       List matchingApps = apps
-          .where((app) => weeklyUsageApps
-              .any((info) => info.packageName == app.packageName))
+          .where(
+            (app) => weeklyUsageApps
+                .any((info) => info.packageName == app.packageName),
+          )
           .toList();
 
       weeklyUsageApps.sort((a, b) => a.packageName.compareTo(b.packageName));
       matchingApps.sort((a, b) => a.packageName.compareTo(b.packageName));
       weeklyAllApps = matchingApps;
-
-      update();
-      debugPrint('Weekly App Info: ${weeklyUsageApps.length}');
-      debugPrint('Weekly App icon: ${weeklyAllApps.length}');
 
       double totalUsageInSeconds = weeklyUsageApps.fold(
           0, (previous, info) => previous + info.usage.inSeconds.toDouble());
@@ -85,7 +83,10 @@ class BatteryUsageController extends GetxController {
           .map((info) =>
               (info.usage.inSeconds.toDouble() / totalUsageInSeconds) * 100)
           .toList();
+
       update();
+      debugPrint('Weekly App Info: ${weeklyUsageApps.length}');
+      debugPrint('Weekly App icon: ${weeklyAllApps.length}');
     } on DeviceApps catch (exception) {
       debugPrint('DeviceAppsException: $exception');
     } on AppUsageException catch (exception) {

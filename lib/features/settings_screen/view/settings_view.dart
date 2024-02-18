@@ -38,13 +38,14 @@ class SettingView extends GetView<SettingController> {
                       ...List.generate(
                         controller.settingsData.length,
                         (index) => SettingsListItem(
-                          currentIndex: controller.currentIndex,
-                          index: index,
-                          icon: controller.settingsData[index].icon,
-                          title: controller.settingsData[index].title,
                           onTap: () {
                             controller.settingonPress(index: index);
                           },
+                           currentIndex: controller.currentIndex,
+                          index: index,
+                          icon: controller.settingsData[index].icon,
+                          title: controller.settingsData[index].title,
+                          
                         ),
                       ),
 

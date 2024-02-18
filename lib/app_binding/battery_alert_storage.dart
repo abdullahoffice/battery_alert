@@ -13,6 +13,52 @@ class BatteryAlertStorage {
     return _instance!;
   }
 
+  //*GetAnimationBoolValue
+  Future<Either<String, bool?>> getAnimationValue() async {
+    try {
+      final bool? isregister =
+          _preferences.getBool(SharedPreferencesKeys.isOn);
+      return right(isregister);
+    } catch (e) {
+      return left('Fail to get bool data');
+    }
+    
+  }
+
+  //*setAnimationData
+  Future<Either<String, void>> setAnimationValue({required bool isregister}) async {
+    try {
+      await _preferences.setBool(
+          SharedPreferencesKeys.isOn, isregister);
+      return right(null);
+    } catch (e) {
+      return left('Fail to set bool data');
+    }
+  }
+
+  //*GetAlarmBoolValue
+  // Future<Either<String, bool?>> getAlarmValue() async {
+  //   try {
+  //     final bool? isregister =
+  //         _preferences.getBool(SharedPreferencesKeys.isAlarmOn);
+  //     return right(isregister);
+  //   } catch (e) {
+  //     return left('Fail to get bool data');
+  //   }
+  // }
+  
+
+  //*setAlarmData
+  // Future<Either<String, void>> setAlarmValue({required bool isregister}) async {
+  //   try {
+  //     await _preferences.setBool(
+  //         SharedPreferencesKeys.isAlarmOn, isregister);
+  //     return right(null);
+  //   } catch (e) {
+  //     return left('Fail to set bool data');
+  //   }
+  // }
+
   //Animation Gif setter
   Future<Either<String, void>> saveSelectedImage(
       {required String imagePath}) async {
@@ -84,4 +130,25 @@ class BatteryAlertStorage {
       debugPrint('Failed to clear charging history data: $e');
     }
   }
+
+  //*set animation switch value
+  // Future<Either<String, void>> setAnimationValue({required bool isOn}) async {
+  //   try {
+  //     await _preferences.setBool(SharedPreferencesKeys.isOn, isOn);
+  //     return right(null);
+  //   } catch (e) {
+  //     return left('Fail to set bool data');
+  //   }
+  // }
+
+  // //*get animation value
+  // Future<Either<String, bool?>> getAnimationValue() async {
+  //   try {
+  //     final bool? isregister =
+  //         _preferences.getBool(SharedPreferencesKeys.isOn);
+  //     return right(isregister);
+  //   } catch (e) {
+  //     return left('Fail to get bool data');
+  //   }
+  // }
 }

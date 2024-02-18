@@ -22,7 +22,7 @@ class WeeklyBatteryUsage extends StatelessWidget {
                   // height: 400.h,
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   child: ListView.builder(
-                    itemCount: controller.weeklyUsageApps.length,
+                    itemCount: controller.weeklyAllApps.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
                         leading: Container(
@@ -37,16 +37,17 @@ class WeeklyBatteryUsage extends StatelessWidget {
                           child: SizedBox(
                             height: 50.h,
                             width: 40.w,
-                            child: controller.weeklyAllApps.isEmpty
-                                ? const Center(
-                                    child: CircularProgressIndicator.adaptive(
-                                      backgroundColor: AppColors.greenColor,
-                                      strokeWidth: 5,
-                                    ),
-                                  )
-                                : Image.memory(
-                                    controller.weeklyAllApps[index].icon,
-                                  ),
+                            child: Image.asset(AppImages.batteryImage),
+                            // controller.weeklyAllApps.isEmpty
+                            //     ? const Center(
+                            //         child: CircularProgressIndicator.adaptive(
+                            //           backgroundColor: AppColors.greenColor,
+                            //           strokeWidth: 5,
+                            //         ),
+                            //       )
+                            //     : Image.memory(
+                            //         controller.weeklyAllApps[index].icon,
+                            //       ),
                           ),
                         ),
                         title: Text(
@@ -62,7 +63,9 @@ class WeeklyBatteryUsage extends StatelessWidget {
                               children: [
                                 Text(
                                   controller.weeklyUsageApps.isNotEmpty
-                                      ? '${controller.weeklyUsageApps[index].usage.inMinutes} Min'
+                                      ? KHelperFunctions().formatToime(
+                                          controller.weeklyUsageApps[index]
+                                              .usage.inMinutes)
                                       : 'N/A',
                                   style: BTextTheme.lightTextTheme.bodyMedium,
                                 ),

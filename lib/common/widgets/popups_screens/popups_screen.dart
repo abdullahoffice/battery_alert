@@ -2,4 +2,5 @@ export 'ad_free_popup.dart';
 export 'battery_alert_update.dart';
 export 'connect_char_popup.dart';
 export 'rate_us_popup.dart';
+export 'privacy_policy.dart';
 

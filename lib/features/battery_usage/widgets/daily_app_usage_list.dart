@@ -11,7 +11,7 @@ class DailyBatteryUsage extends StatelessWidget {
     return GetBuilder<BatteryUsageController>(
         initState: (state) {},
         builder: (_) {
-          return controller.dailyUsageApp.isEmpty
+          return controller.dailyAllApps.isEmpty
               ? const Center(
                   child: CircularProgressIndicator.adaptive(
                     backgroundColor: AppColors.greenColor,
@@ -37,17 +37,18 @@ class DailyBatteryUsage extends StatelessWidget {
                           child: SizedBox(
                             height: 50.h,
                             width: 40.w,
-                            child: controller.dailyAllApps.isEmpty
-                                ? const Center(
-                                    child: CircularProgressIndicator.adaptive(
-                                      backgroundColor:
-                                          AppColors.backgroundColor,
-                                      strokeWidth: 3,
-                                    ),
-                                  )
-                                : Image.memory(
-                                    controller.dailyAllApps[index].icon,
-                                  ),
+                            child: Image.asset(AppImages.batteryImage)
+                            // child: controller.dailyAllApps.isEmpty
+                            //     ? const Center(
+                            //         child: CircularProgressIndicator.adaptive(
+                            //           backgroundColor:
+                            //               AppColors.backgroundColor,
+                            //           strokeWidth: 3,
+                            //         ),
+                            //       )
+                            //     : Image.memory(
+                            //         controller.dailyAllApps[index].icon,
+                            //       ),
                           ),
                         ),
                         title: Text(
@@ -63,7 +64,9 @@ class DailyBatteryUsage extends StatelessWidget {
                               children: [
                                 Text(
                                   controller.dailyUsageApp.isNotEmpty
-                                      ? '${controller.dailyUsageApp[index].usage.inMinutes} Min'
+                                      ? KHelperFunctions().formatToime(
+                                          controller.dailyUsageApp[index].usage
+                                              .inMinutes)
                                       : 'N/A',
                                   style: BTextTheme.lightTextTheme.bodyMedium,
                                 ),
@@ -80,11 +83,12 @@ class DailyBatteryUsage extends StatelessWidget {
                             LinearProgressIndicator(
                               value: controller.dailyUsageApp.isNotEmpty
                                   ? controller.percentages[index] / 100
-                                  : 1,
+                                  : 0,
                               minHeight: 9.h,
                               borderRadius: BorderRadius.circular(10.r),
                               valueColor: const AlwaysStoppedAnimation<Color>(
-                                  AppColors.secondaryColor),
+                                AppColors.secondaryColor,
+                              ),
                             ),
                           ],
                         ),

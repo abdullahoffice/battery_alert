@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'battery_alert.dart';
 
 class MyApp extends StatefulWidget {
@@ -8,44 +9,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  @override
+  final controller = Get.put(HomeController());
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    Get.put(CharAnimController());
-  }
- 
-  @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.resumed) {
-      Get.put(BatteryViewController);
-      BatteryViewController.instance
-          .updateBatteryInformation(AndroidBatteryInfo());
-      BatteryInfoPlugin().androidBatteryInfoStream;
-      BatteryUsageController.instance.getDailyUsageStats();
-      BatteryUsageController.instance.getWeeklyUsageStats();
-      final BatteryState batteryState =
-          await battery.batteryState; // Get current battery state
-
-      if (batteryState == BatteryState.charging ||
-          batteryStatus == BatteryState.full) {
-        // final historyStorage = await BatteryAlertStorage.getInstance();
-        // historyStorage.getChargingHistory();
-        ChargingHistoryController.instance.getCharhistory();
-        await BatteryAlertStorage.getInstance();
-        debugPrint('BoolValueF: ${HomeController.instance.animationBoolValue}');
-        if (HomeController.instance.animationBoolValue) {
-          debugPrint(
-              'BoolValueT: ${HomeController.instance.animationBoolValue}');
-          // Get.to(() => const AnimationView());
-
-          Get.to(() => const AnimationView());
-          CharAnimController.instance.getSelectedImage();
-        }
-      }
-    }
-
-    debugPrint('State-InApp: $state');
   }
 
   @override
@@ -54,27 +21,64 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  startCallTimer() async {
+    await Future.delayed(const Duration(seconds: 0), () async {
+      await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp]);
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+      await Get.to(() => const AnimationView());
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      Battery battery = Battery();
+      battery.onBatteryStateChanged.listen((batteryListen) async {
+        if (batteryListen == BatteryState.charging) {
+          if (controller.animationBoolValue) {
+            startCallTimer();
+          } else {
+            // Fluttertoast.showToast(msg: 'Background services not started');
+          }
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(370, 900),
+      // designSize: const Size(960, 1440),
+      designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: false,
       builder: (context, child) {
-        return GetMaterialApp(
-          initialBinding: AppBinding(),
-          title: 'Battery Alert App',
-
-          debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.system,
-          theme: BAppThemes.lightTheme,
-          // home: const BackgroudServices(),
-          home: const SplashView(),
-          // home: const BaterryInfo(),
-          // home: const BatteryInfoList(),
-          // home: const DeviceInfo(),
-          // home: const BatteryPlus(),
-        );
+        return  GetMaterialApp(
+            // navigatorObservers: [MyObserver()],
+            initialBinding: AppBinding(),
+            title: 'Battery Alert App',
+            debugShowCheckedModeBanner: false,
+            themeMode: ThemeMode.system,
+            theme: BAppThemes.lightTheme,
+            getPages: AppRoutes.appRoutes(),
+            // initialRoute: '/',
+            // routes: {
+            //     '/': (context) => const SplashView(),
+            //     '/home_view': (context) => const HomeView(),
+            //     '/settings': (context) => const SettingView(),
+            //     '/premium': (context) => const PremiumView(),
+            //     '/charging_history': (context) => const ChargingHistoryView(),
+            //     '/charging_animation': (context) => const AnimationView(),
+            //     '/selected_animation': (context) => const SelectAnimation(),
+            //     '/charger_testing': (context) => const ChargerTestingView(),
+            //     '/battery_usage': (context) => const BatteryUsageView(),
+            //     '/battery_information': (context) => const BatteryInfoView(),
+            //   //   '/alarm_setting': (context) => const AlarmSettingsView(),
+            // },
+          );
       },
     );
   }

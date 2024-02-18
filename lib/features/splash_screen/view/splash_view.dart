@@ -37,24 +37,23 @@ class SplashView extends GetView<SplashController> {
                   right: 32.w,
                   child: _splashImage,
                 ),
-          
+
                 //*SplashText
                 Positioned(
                   bottom: 80.h,
                   left: 99.w,
                   child: _splashTexts,
                 ),
-          
+
                 //*left line
                 Positioned(
                   left: 0.1 - 105.w,
                   right: 225.w,
                   top: 29.h,
-                  
                   bottom: 340.h,
                   child: _leftLine,
                 ),
-          
+
                 //*right line
                 Positioned(
                   bottom: 0.1 - 44.h,

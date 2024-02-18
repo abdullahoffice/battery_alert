@@ -1,7 +1,21 @@
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../../battery_alert.dart';
 
-class BatterAlertUpdates extends StatelessWidget {
+class BatterAlertUpdates extends GetWidget {
   const BatterAlertUpdates({super.key});
+// Function to launch Play Store for rating
+  void _launchPlayStore() async {
+    // const url =
+    //     'https://play.google.com/store/apps/details?id=YOUR_APP_PACKAGE_NAME';
+    const url = 'https://play.google.com/store';
+    final Uri playStoreUrl = Uri.parse(url);
+    if (await canLaunchUrl(playStoreUrl)) {
+      await launchUrl(playStoreUrl);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +29,9 @@ class BatterAlertUpdates extends StatelessWidget {
             Row(
               children: [
                 AppImage.asset(
-                  image: AppImages.batteryImage,height: 53.h,width: 53.w,
+                  image: AppImages.batteryImage,
+                  height: 53.h,
+                  width: 53.w,
                 ),
                 SizedBox(width: 10.w),
                 Text(
@@ -25,7 +41,7 @@ class BatterAlertUpdates extends StatelessWidget {
                 ),
               ],
             ),
-             SizedBox(height: 10.h),
+            SizedBox(height: 10.h),
             Text(
               "Would you like to check the update is available on play store",
               textAlign: TextAlign.center,
@@ -50,7 +66,7 @@ class BatterAlertUpdates extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () => _launchPlayStore(),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(

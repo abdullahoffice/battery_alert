@@ -15,7 +15,7 @@ class AdsWidget extends GetWidget {
         child: Text(
           'ADS',
           style: BTextTheme.lightTextTheme.headlineLarge!
-              .copyWith(fontSize: 80.sp, fontWeight: FontWeight.normal),
+              .copyWith(fontSize: 80, fontWeight: FontWeight.normal),
         ),
       ),
     );

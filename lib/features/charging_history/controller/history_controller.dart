@@ -62,25 +62,31 @@ class ChargingHistoryController extends GetxController {
 
     data.fold(
       (errorMessage) {
-        Fluttertoast.showToast(msg: errorMessage);
+        // Fluttertoast.showToast(msg: errorMessage);
+        debugPrint('Charging history: $errorMessage');
       },
       (r) => null,
     );
+    debugPrint('Set Charging history called:');
     update();
   }
 
   //*Get Model
+  //?: ******** This is appearing again and again */
   ChargingHistoryModel model = ChargingHistoryModel();
   List<ChargingHistoryModel> historyList = [];
   Future<void> getCharhistory() async {
     final result = await BatteryAlertStorage.getInstance();
     final data = result.getChargingHistory();
-
+    // debugPrint('data : $data');
+    // debugPrint('result : $result');
     data.fold((errorMessage) {
-      Fluttertoast.showToast(msg: errorMessage);
+      // Fluttertoast.showToast(msg: errorMessage);
+      debugPrint('Charging history: $errorMessage');
     }, (fetchedData) {
       historyList = fetchedData;
-      Fluttertoast.showToast(msg: 'Data Fetched');
+      // Fluttertoast.showToast(msg: 'Data Fetched');
+      debugPrint('Data Fetched');
     });
 
     update();
@@ -96,6 +102,7 @@ class ChargingHistoryController extends GetxController {
   bool chargerPluggedIn = false;
 
   void startListening() {
+    debugPrint('Start listening...');
     BatteryInfoPlugin().androidBatteryInfoStream.listen((batteryInfo) {
       if (batteryInfo != null) {
         handleBatteryInfo(batteryInfo);
@@ -162,6 +169,7 @@ class ChargingHistoryController extends GetxController {
       final historyStorage = await BatteryAlertStorage.getInstance();
       // final existingHistoryData = await ChargingHistoryController.instance.getCharhistory(); //test with this
       final existingHistoryData = historyStorage.getChargingHistory();
+      debugPrint('Existing History: ${historyList.length}');
       existingHistoryData.fold(
         (errorMessage) {
           debugPrint('Error: retrieving existing history: $errorMessage');
@@ -174,7 +182,6 @@ class ChargingHistoryController extends GetxController {
 
       // Add new historyModel
       historyList.add(historyModel);
-
       // Remove duplicates from historyList
       historyList = historyList.toSet().toList();
 
@@ -182,10 +189,9 @@ class ChargingHistoryController extends GetxController {
       await setChargHistory(
         history: historyList,
       );
-      // debugPrint(
-      //     'historyy: ${ChargingHistoryController.instance.historyList.length}');
-      // historyList.addAll(historyList);
-      // ChargingHistoryController.instance.update();
+
+      ChargingHistoryController.instance.getCharhistory();
+      debugPrint('New History: ${historyList.length}');
       update();
     }
   }
@@ -223,14 +229,31 @@ class ChargingHistoryController extends GetxController {
 
       Duration chargingDuration = plugOutDateTime.difference(plugInDateTime);
 
-      String formattedDuration = [
-        chargingDuration.inHours.toString().padLeft(2, '0'),
-        (chargingDuration.inMinutes % 60).toString().padLeft(2, '0'),
-        (chargingDuration.inSeconds % 60).toString().padLeft(2, '0'),
-      ].where((part) => part != '00').join(':');
-      if (formattedDuration.endsWith(':00')) {
-        formattedDuration =
-            '${formattedDuration.substring(0, formattedDuration.length - 3)}s';
+      // String formattedDuration = [
+      //   chargingDuration.inHours.toString().padLeft(2, '0'),
+      //   (chargingDuration.inMinutes % 60).toString().padLeft(2, '0'),
+      //   (chargingDuration.inSeconds % 60).toString().padLeft(2, '0'),
+      // ].where((part) => part != '00').join(':');
+      // if (formattedDuration.endsWith(':00')) {
+      //   formattedDuration =
+      //       '${formattedDuration.substring(0, formattedDuration.length - 3)}s';
+      // }
+
+      String formattedDuration;
+
+      if (chargingDuration.inSeconds < 60) {
+        formattedDuration = '${chargingDuration.inSeconds}s';
+      } else {
+        formattedDuration = [
+          chargingDuration.inHours.toString().padLeft(2, '0'),
+          (chargingDuration.inMinutes % 60).toString().padLeft(2, '0'),
+          (chargingDuration.inSeconds % 60).toString().padLeft(2, '0'),
+        ].where((part) => part != '00').join(':');
+
+        if (formattedDuration.endsWith(':00')) {
+          formattedDuration =
+              '${formattedDuration.substring(0, formattedDuration.length - 3)}s';
+        }
       }
       return formattedDuration;
     } catch (e) {

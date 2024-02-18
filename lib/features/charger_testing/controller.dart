@@ -1,6 +1,7 @@
 import '../../battery_alert.dart';
 
 class ChargerTestingController extends GetxController {
+  Rx<AndroidBatteryInfo?> batterySnapshot = Rx<AndroidBatteryInfo?>(null);
   static final instance = Get.find<ChargerTestingController>();
   // cal Min Current
   double calculateMinCurrent(double? currentNow, double? currentAverage) {
@@ -82,7 +83,7 @@ class ChargerTestingController extends GetxController {
     if (batteryLevelDifference > 1 && storedMinutes > 3) {
       chargerStatus = "Poor";
     } else if ((batteryLevelDifference == 1 && storedMinutes <= 3)) {
-      chargerStatus = "Normal";
+      chargerStatus = "Good";
     } else if (batteryLevelDifference == 1 && storedMinutes <= 2) {
       chargerStatus = "Good";
     } else if (batteryLevelDifference == 1 && storedMinutes <= 1) {

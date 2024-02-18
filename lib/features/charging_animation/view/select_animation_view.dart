@@ -33,7 +33,7 @@ class SelectAnimation extends GetView<CharAnimController> {
                 SizedBox(height: 76.h),
                 Expanded(
                   flex: 7,
-                  child: CarouselSlider.builder(
+                   child: CarouselSlider.builder(
                     itemCount: controller.chargingAnimationData.length,
                     itemBuilder: (context, index, pageViewIndex) {
                       return GestureDetector(
@@ -45,11 +45,15 @@ class SelectAnimation extends GetView<CharAnimController> {
                           if (HomeController.instance.animationBoolValue) {
                             debugPrint(
                                 'Value: ${HomeController.instance.animationBoolValue}');
-                            Get.to(() => const AnimationView());
+                            // Get.to(() => const AnimationView());
+                            Get.toNamed(RouteName.chargingAnimationScreen);
+                            Navigator.pushNamed(context, '/home_view');
+
                           }
                           CharAnimController.instance.getSelectedImage();
                           debugPrint(
                               'index: ${controller.chargingAnimationData[globalSelectedIndex].images}');
+                              debugPrint('width: ${Get.width}');
                           // debugPrint('Get: ${controller.imageData}');
                         },
                         child: Padding(
@@ -65,8 +69,7 @@ class SelectAnimation extends GetView<CharAnimController> {
                                 bottom: 145.h,
                                 left: 20.w,
                                 right: 20.w,
-                                top: 20.h, // Adjust the top margin as needed
-
+                                top: 20.h,
                                 child: Image.asset(
                                   controller
                                       .chargingAnimationData[index].images,

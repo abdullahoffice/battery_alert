@@ -1,31 +1,44 @@
+import 'package:flutter/services.dart';
+
 import '../../battery_alert.dart';
 
 class CharAnimController extends GetxController {
   static final instance = Get.find<CharAnimController>();
 
-  List<ChargingAnimationModel> chargingAnimationData1 = [
-    // ChargingAnimationModel(images: AppImages.animationOne),
-    ChargingAnimationModel(images: AppImages.animationTwo),
-    ChargingAnimationModel(images: AppImages.animationTwo),
-    ChargingAnimationModel(images: AppImages.animationTwo),
-    ChargingAnimationModel(images: AppImages.animationTwo),
-    // ChargingAnimationModel(images: AppImages.animationTwo),
+  void func() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      battery.onBatteryStateChanged.listen((event) {
+        if (event == BatteryState.discharging) {
+          SystemNavigator.pop();
+        }
+      });
+      update();
+    });
+  }
 
-    // ChargingAnimationModel(images: AppImages.animationThree),
-    // ChargingAnimationModel(images: AppImages.animationFourth),
-    // ChargingAnimationModel(images: AppImages.animationFifth),
-    // ChargingAnimationModel(images: AppImages.animationSix),
-  ];
-  late List char = [
-    const Image(image: AssetImage(AppImages.animationThree)),
-    const Image(image: AssetImage(AppGifs.animationFifth)),
-    const Image(image: AssetImage(AppGifs.animationFourth)),
-    const Image(image: AssetImage(AppImages.animationSix)),
-    const Padding(
-      padding: EdgeInsets.only(top: 20),
-      child: Image(image: AssetImage(AppImages.animationTwo)),
-    ),
-  ];
+  // List<ChargingAnimationModel> chargingAnimationData1 = [
+  //   // ChargingAnimationModel(images: AppImages.animationOne),
+  //   ChargingAnimationModel(images: AppImages.animationTwo),
+  //   ChargingAnimationModel(images: AppImages.animationTwo),
+  //   ChargingAnimationModel(images: AppImages.animationTwo),
+  //   ChargingAnimationModel(images: AppImages.animationTwo),
+  //   // ChargingAnimationModel(images: AppImages.animationTwo),
+
+  //   // ChargingAnimationModel(images: AppImages.animationThree),
+  //   // ChargingAnimationModel(images: AppImages.animationFourth),
+  //   // ChargingAnimationModel(images: AppImages.animationFifth),
+  //   // ChargingAnimationModel(images: AppImages.animationSix),
+  // ];
+  // late List char = [
+  //   const Image(image: AssetImage(AppImages.animationThree)),
+  //   const Image(image: AssetImage(AppGifs.animationFifth)),
+  //   const Image(image: AssetImage(AppGifs.animationFourth)),
+  //   const Image(image: AssetImage(AppImages.animationSix)),
+  //   const Padding(
+  //     padding: EdgeInsets.only(top: 20),
+  //     child: Image(image: AssetImage(AppImages.animationTwo)),
+  //   ),
+  // ];
   List<ChargingAnimationModel> chargingAnimationData = [
     ChargingAnimationModel(images: AppGifs.animationFifth),
     ChargingAnimationModel(images: AppGifs.animationThree),
@@ -47,8 +60,9 @@ class CharAnimController extends GetxController {
   }
 
   //*getImage
-  String imageData = 'N/A';
+  String imageData = AppGifs.animationFifth;
   Future<void> getSelectedImage() async {
+    debugPrint('Width: ');
     final result = await BatteryAlertStorage.getInstance();
     final data = await result.getSelectedImage();
     data.fold((errorMessage) {

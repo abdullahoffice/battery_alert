@@ -15,7 +15,7 @@ class SettingController extends GetxController {
     SettingModel(title: 'Buy AdFree Version', icon: AppSvgs.crownIcon),
     SettingModel(title: 'Rate this App', icon: AppSvgs.feedBackIcon),
     SettingModel(title: 'Share App', icon: AppSvgs.shareIcon),
-    SettingModel(title: 'Privacy policy', icon: AppSvgs.praivayIcon),
+    // SettingModel(title: 'Contact us', icon: AppSvgs.contactUsIcon),
     SettingModel(title: 'Check Updates', icon: AppSvgs.updatesIcon),
   ];
 
@@ -31,14 +31,34 @@ class SettingController extends GetxController {
         Get.dialog(const RateUsPopup());
         break;
       case 2:
+        _shareApp();
         break;
       case 3:
-        break;
-      case 4:
         Get.dialog(const BatterAlertUpdates());
         break;
       default:
         break;
+    }
+  }
+
+  void _shareApp() async {
+    await Share.share(
+      // 'Check out this awesome app! https://play.google.com/store/apps/details?id=battery_alert',
+      'Check out this awesome app! https://play.google.com/store',
+    ); // Replace with your app's Play Store URL
+  }
+
+  void launchEmailForFeedback() async {
+    const email = 'support@tophats.app';
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: email,
+      query: 'subject=Feedback&body=Your feedback here',
+    );
+    if (await canLaunchUrl(params)) {
+      await launchUrl(params);
+    } else {
+      throw 'Could not launch $params';
     }
   }
 }

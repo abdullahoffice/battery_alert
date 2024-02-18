@@ -14,9 +14,10 @@ class AppBarView extends GetWidget {
         children: [
           CustomIconButton(
             iconPath: AppSvgs.settings,
-            onPress: () => Get.to(
-              const SettingView(),
-            ),
+            // onPress: () => Get.to(
+            //   const SettingView(),
+            // ),
+            onPress: () => Get.toNamed(RouteName.settingsScreen),
           ),
           const Spacer(),
           GestureDetector(

@@ -32,7 +32,9 @@ class AdFreePopup extends StatelessWidget {
         actions: <Widget>[
           
           ElevatedButton(
-            onPressed: () => Get.to(const PremiumView()),
+            // onPressed: () => Get.to(()=>const PremiumView()),
+            onPressed: () => Get.toNamed(
+                                        RouteName.premiumScreen),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(

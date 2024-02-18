@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../../battery_alert.dart';
 
 class AnimationView extends GetView<CharAnimController> {
@@ -5,14 +7,29 @@ class AnimationView extends GetView<CharAnimController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.func();
     return Scaffold(
-      body: _body,
+      backgroundColor: Colors.transparent,
+      bottomNavigationBar: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.sizeOf(context).height * 0.05),
+        child: Text(
+          'Double Tap to exist',
+          style: BTextTheme.lightTextTheme.headlineSmall,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      body: GestureDetector(
+          onDoubleTap: () {
+            SystemNavigator.pop();
+          },
+          child: _body),
     );
   }
 
   Widget get _body => GetBuilder<CharAnimController>(initState: (state) {
         // Timer(const Duration(seconds: 3), () {
-        //   Get.back();
+        //   debugPrint('Animation Screen');
         // });
       }, builder: (_) {
         return StreamBuilder(
@@ -36,9 +53,9 @@ class AnimationView extends GetView<CharAnimController> {
                       ),
                     ),
                     Positioned(
-                      top: 360.h,
-                      right: 115.w,
-                      left: 145.w,
+                      top: 320.h,
+                      right: 11.w,
+                      left: 152.w,
                       child: Text(
                         '${(snapshot.data?.batteryLevel)} %',
                         style: BTextTheme.lightTextTheme.headlineLarge,

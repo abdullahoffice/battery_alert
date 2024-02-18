@@ -18,19 +18,13 @@ class PremiumView extends GetView<PremiumController> {
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h),
             child: Column(
               children: [
-                //*TopNavigationBar
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
-                  child: const PremiumHeader(),
-                ),
+                //
+                _appBar,
 
-                //*images
-                const Expanded(
-                  child: CrauselImages(),
-                ),
+                //
+                const CrauselImages(),
 
-                //*Bottom
+                //
                 SizedBox(height: 10.h),
                 Expanded(
                   flex: 2,
@@ -39,37 +33,37 @@ class PremiumView extends GetView<PremiumController> {
                     width: double.infinity,
                     height: double.infinity,
                     color: AppColors.backgroundColor,
-                    //TODO 2
                     child: SingleChildScrollView(
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          //*Dot
-                          DotsIndicatorWidget(
-                            dotsCounts: controller.premiumImages.length,
-                          ),
-
-                          //*joinPreText
+                          //
                           _joinPremium,
 
-                          //*Ads free text
+                          //
                           SizedBox(height: 5.h),
-                          Text(
-                            'Ads Free And More ',
-                            style: BTextTheme.lightTextTheme.labelLarge!
-                                .copyWith(color: AppColors.yellowColor),
-                          ),
+                          // Visibility(
+                          //   visible: !_.isSubscribe,
+                          //   child: Text('Showing Google Ads: ${_.isSubscribe}'),
+                          // ),
+                          // const SizedBox(height: 10),
+                          // TextButton(
+                          //   onPressed: () {
+                          //     _.iApEngine.inAppPurchase.restorePurchases();
+                          //   },
+                          //   child: Text('Restored Purchase',style: BTextTheme.lightTextTheme.titleLarge,),
+                          // ),
+                          // const SizedBox(height: 10),
+                          // _textAdsFree,
 
-                          //*PaymentCard
+                          //
                           SizedBox(height: 5.h),
-
                           const PaymentCardWidget(),
 
-                          //*SubscribeButton
+                          //
                           SizedBox(height: 10.h),
-                          const ButtonWidget(),
+                          const SubscriptionButton(),
 
-                          //*texts
+                          //
                           SizedBox(height: 5.h),
                           Text(
                             'Recuring billing cancel any time',
@@ -81,10 +75,10 @@ class PremiumView extends GetView<PremiumController> {
                             textAlign: TextAlign.center,
                             style:
                                 BTextTheme.lightTextTheme.bodyMedium!.copyWith(
-                              fontSize: 9.sp,
+                              fontSize: 9,
                             ),
                           ),
-                          // const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
                         ],
                       ),
                     ),
@@ -112,5 +106,18 @@ class PremiumView extends GetView<PremiumController> {
             ),
           )
         ],
+      );
+
+  Widget get _appBar => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 18.w,
+          vertical: 8.h,
+        ),
+        child: const PremiumHeader(),
+      );
+  Widget get _textAdsFree => Text(
+        'Ads Free And More ',
+        style: BTextTheme.lightTextTheme.labelLarge!
+            .copyWith(color: AppColors.yellowColor),
       );
 }

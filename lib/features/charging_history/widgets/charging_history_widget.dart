@@ -57,7 +57,7 @@ class ChargingHistoryItemWidget extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: [  
               Column(
                 children: [
                   Text(

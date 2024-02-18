@@ -43,13 +43,14 @@ class HistoryTimeWidget extends StatelessWidget {
                   child: Center(
                     child: SizedBox(
                       height: 44.h,
-                      width: 73,
+                      width: 80.w,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             startPercentage,
-                            style: BTextTheme.lightTextTheme.bodyLarge!.copyWith(
+                            style:
+                                BTextTheme.lightTextTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColors.secondaryColor,
                             ),
@@ -60,7 +61,8 @@ class HistoryTimeWidget extends StatelessWidget {
                           ),
                           Text(
                             endPercentage,
-                            style: BTextTheme.lightTextTheme.bodyLarge!.copyWith(
+                            style:
+                                BTextTheme.lightTextTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColors.secondaryColor,
                             ),

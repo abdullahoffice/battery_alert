@@ -3,11 +3,11 @@ class PremiumModel {
   final String timePeriod;
   final String payFor;
   final String price;
-  PremiumModel({
+  final String type;
+  PremiumModel(
+    this.type, {
     required this.timePeriod,
     required this.payFor,
     required this.price,
   });
 }
-
-

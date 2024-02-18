@@ -1,4 +1,9 @@
+import 'package:battery_alert/features/alarm_setting/view/alarmsetting_screen.dart';
+
 import '../../../battery_alert.dart';
+
+AlarmSettingsController alarmsettingcontroller = AlarmSettingsController();
+HomeController homeeController = HomeController();
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -18,10 +23,16 @@ class HomeView extends GetView<HomeController> {
 
   Widget get _body => GetBuilder<HomeController>(
         initState: (state) {
-          // TODO: a
-          // BatteryInfoHandler.instance.startListening();
-          ChargingHistoryController.instance.startListening();
-          ChargingHistoryController.instance.getCharhistory();
+          // state.initState();
+          // controller.getAnimationValue();
+          controller.loadAlarmSetting();
+          controller.loadAnimationSetting();
+          controller.handleService();
+          homeeController.loadAlarmSetting();
+          homeeController.handleService();
+          alarmsettingcontroller.getFullBatteryAlarm();
+
+          // ChargingHistoryController.instance.setChargHistory(history: history);
         },
         builder: (_) {
           return SizedBox(
@@ -43,10 +54,47 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ),
 
-                    //*Center
-                    const BatteryInfoWidget(),
+                    //* BatteryInfoCard
+                    // const BatteryInfoWidget(),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                      child: StreamBuilder(
+                        stream: BatteryInfoPlugin().androidBatteryInfoStream,
+                        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                          String? healthStatus =
+                              snapshot.data?.health!.split('_').last;
+                          // var data = snapshot.data!.chargingStatus.toString();
+                          if (snapshot.hasData) {
+                            return PowerConsumpCard(
+                              statusText: AppScreenUtils.getChargingStatus(
+                                  snapshot.data?.chargingStatus),
+                              hourValue: snapshot.data!.batteryLevel == 100
+                                  ? 'Full'
+                                  : '${(snapshot.data!.chargeTimeRemaining! / 1000 / 60 / 60).truncate()}h ',
+                              minValue: snapshot.data!.batteryLevel == 100
+                                  ? ''
+                                  : '${(snapshot.data!.chargeTimeRemaining! / 1000 / 60 % 60).truncate()}m',
+                              healthStatus: "$healthStatus",
+                              temperatureValue:
+                                  '${(snapshot.data!.temperature!)} °C',
+                              voltageValue:
+                                  '${(snapshot.data?.voltage)! / 1000} mV',
+                              capacityValue:
+                                  '${int.parse((snapshot.data!.batteryCapacity! / 1000).toStringAsFixed(0))} mAh',
+                              batteryPercentage:
+                                  '${(snapshot.data?.batteryLevel)} %',
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                      ),
+                    ),
 
-                    //*Bottom
+                    //* Switch buttons
                     SizedBox(height: 20.h),
                     Padding(
                       padding:
@@ -62,9 +110,15 @@ class HomeView extends GetView<HomeController> {
                                 imgText: 'assets/images/icons/alarmIcon.svg',
                                 title1: 'Alarm \nsetting',
                                 onTap: () =>
-                                    Get.to(() => const AlarmSettingsView()),
+                                    // Get.to(() => const AlarmSettingsView()),
+                                    // Get.toNamed(RouteName.alarmSettingScreen),
+                                    Get.to(const AlarmSettingsScreen()),
                                 onChanged: (value) {
                                   controller.handleAlarmSetting(value: value);
+                                  controller.loadAlarmSetting();
+                                  controller.handleService();
+                                  alarmsettingcontroller.setFullBatteryAlarm(
+                                      value: value);
                                 },
                                 value: controller.alarmSettingBoolValue,
                               ),
@@ -73,18 +127,39 @@ class HomeView extends GetView<HomeController> {
                               SwitchSettingCard(
                                 imgText: 'assets/images/icons/chargeIcon.svg',
                                 title1: 'Charging \nAnimation',
-                                onTap: () =>
-                                    Get.to(() => const SelectAnimation()),
-                                onChanged: (value) {
-                                  controller.handleAnimationSwitch(
-                                      value: value);
+                                onTap: () async {
+                                  Get.toNamed(RouteName.selectAnimationScreen);
+                                },
+                                onChanged: (value) async {
+                                  final status = await FlutterOverlayWindow
+                                      .isPermissionGranted();
+                                  if (status) {
+                                    controller.handleAnimationSetting(
+                                      value: value,
+                                    );
+                                    controller.loadAnimationSetting();
+                                    controller.handleService();
+                                  } else {
+                                    // Request permission
+                                    final bool? res = await FlutterOverlayWindow
+                                        .requestPermission();
+                                    if (res != null && res) {
+                                      controller.handleAnimationSetting(
+                                        value: value,
+                                      );
+                                      controller.loadAnimationSetting();
+                                      controller.handleService();
+                                    } else {
+                                      debugPrint('Permission Denied');
+                                    }
+                                  }
                                 },
                                 value: controller.animationBoolValue,
                               ),
                             ],
                           ),
 
-                          //*AdsAndSmallContainers
+                          //* AdsAndSmallContainers
                           SizedBox(height: 20.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,15 +170,21 @@ class HomeView extends GetView<HomeController> {
                                   cardBox(
                                     text1: 'Charging \nHistory',
                                     image: AppSvgs.batteryIcon,
-                                    onTap: () => Get.to(
-                                        () => const ChargingHistoryView()),
+                                    // onTap: () => Get.to(
+                                    //     () => const ChargingHistoryView()),
+                                    onTap: () => Get.toNamed(
+                                        RouteName.chargingHistoryScreen),
                                   ),
                                   SizedBox(height: 25.h),
                                   cardBox(
                                     text1: 'Battery \nInformation',
                                     image: AppSvgs.batteryIcon,
-                                    onTap: () =>
-                                        Get.to(() => const BatteryInfoView()),
+                                    // onTap: () =>
+                                    // Get.to(() => const BatteryInfoView()),
+                                    onTap: () => Get.toNamed(
+                                        RouteName.batteryInformationScreen),
+                                    // onTap: () =>
+                                    //     Get.to(() => const BatteryInfoGridView()),
                                   ),
                                 ],
                               ),
@@ -113,7 +194,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ),
 
-                    //*SmallContainers
+                    //*SmallContainersCards
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
@@ -123,14 +204,19 @@ class HomeView extends GetView<HomeController> {
                           cardBox(
                             text1: 'Battery \nusage ',
                             image: AppSvgs.batteryCellIcon,
-                            onTap: () => Get.to(() => const BatteryUsageView()),
+                            // onTap: () => Get.to(() => const BatteryUsageView()),
+                            onTap: () =>
+                                Get.toNamed(RouteName.batteryUsageScreen),
+                            // Get.toNamed(RouteName.chargingAnimationScreen),
                           ),
                           SizedBox(height: 25.h),
                           cardBox(
                             text1: 'charger \ntesting',
                             image: AppSvgs.chargerIcon,
+                            // onTap: () =>
+                            //     Get.to(() => const ChargerTestingView()),
                             onTap: () =>
-                                Get.to(() => const ChargerTestingView()),
+                                Get.toNamed(RouteName.chargerTestingScreen),
                           ),
                         ],
                       ),
@@ -140,7 +226,7 @@ class HomeView extends GetView<HomeController> {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
-                      child: Container(
+                      child: SizedBox(
                         width: double.infinity,
                         child: adsBoxWidget(height: 80.h),
                       ),

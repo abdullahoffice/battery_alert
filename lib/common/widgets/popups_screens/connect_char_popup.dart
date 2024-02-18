@@ -1,4 +1,4 @@
-import '../../../battery_alert.dart'; // Import Get for Get.back()
+import '../../../battery_alert.dart';
 
 class ConnectCharPopup extends StatelessWidget {
   const ConnectCharPopup({Key? key}) : super(key: key);
@@ -63,7 +63,11 @@ class ConnectCharPopup extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              // for rating
+              _launchPlayStore();
+              // _launchEmailForFeedback();
+            },
             style: ElevatedButton.styleFrom(
               primary: Colors.black,
               shape: RoundedRectangleBorder(
@@ -80,4 +84,31 @@ class ConnectCharPopup extends StatelessWidget {
           ),
         ],
       );
+  // Function to launch Play Store for rating
+  void _launchPlayStore() async {
+    // const url =
+    //     'https://play.google.com/store/apps/details?id=YOUR_APP_PACKAGE_NAME';
+    const url = 'https://play.google.com/store';
+    final Uri playStoreUrl = Uri.parse(url);
+    if (await canLaunchUrl(playStoreUrl)) {
+      await launchUrl(playStoreUrl);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  // Function to launch email client for feedback
+  void _launchEmailForFeedback() async {
+    const email = 'your@email.com';
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: email,
+      query: 'subject=Feedback&body=Your feedback here',
+    );
+    if (await canLaunchUrl(params)) {
+      await launchUrl(params);
+    } else {
+      throw 'Could not launch $params';
+    }
+  }
 }
